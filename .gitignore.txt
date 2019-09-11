@@ -15,6 +15,7 @@
 
 # Idea
 .idea*
+.iml
 
 # Binaries
 tppod/client/target/*
