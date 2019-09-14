@@ -15,22 +15,22 @@ public class VotingServiceImpl implements VotingService{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	
 	
-	private List<Vote> voteList;
+	
+	private ElectionCentral central;
 	// tmbn falta agregarlo al server
 
-	public VotingServiceImpl() {
+	public VotingServiceImpl(ElectionCentral central) {
 		
-		this.voteList = new ArrayList<Vote>();
+		this.central = central;
 		
 	}
 
 	@Override
 	public void vote(List<Vote> votes) throws RemoteException {
 		
-		for(Vote v: votes) {
-			this.voteList.add(v);
-		}
+		central.addVotes(votes);
 		LOGGER.info("Votes added.");
+		
 	}
 
 	// desps probar leer de CSV posta y ver q funque. 

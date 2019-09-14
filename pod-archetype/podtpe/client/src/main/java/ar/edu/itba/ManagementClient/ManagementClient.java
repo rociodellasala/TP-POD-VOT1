@@ -15,8 +15,7 @@ public class ManagementClient {
     public static void main(String[] args) throws RemoteException, NotBoundException, MalformedURLException {
         logger.info("tppod Client Starting ...");
 
-        final AdministrationService handle = (AdministrationService) 
-        		Naming.lookup("//localhost:1099/administration-service");
+        final AdministrationService handle = (AdministrationService) Naming.lookup("//localhost:1099/administration-service");
 
         handle.open();
 

@@ -7,17 +7,17 @@ import org.slf4j.LoggerFactory;
 
 public class AdministrationServiceImpl implements AdministrationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
-    private ElectionState state;
+    private ElectionCentral central;
 
-    public AdministrationServiceImpl() {
-        state = ElectionState.NOT_STARTED;
+    public AdministrationServiceImpl(ElectionCentral central) {
+    	this.central = central;
     }
 
     @Override
     synchronized public void open() throws IllegalStateException {
-        switch(state){
+        switch(central.getState()){
             case NOT_STARTED:
-                state = ElectionState.STARTED;
+                central.setState(ElectionState.STARTED); 
                 LOGGER.info("Started election.");
                 break;
             case STARTED:
@@ -30,16 +30,16 @@ public class AdministrationServiceImpl implements AdministrationService {
 
     @Override
     public ElectionState getCurrentSate() {
-        return state;
+        return central.getState();
     }
 
     @Override
     synchronized public void close() throws IllegalStateException {
-        switch(state){
+        switch(central.getState()){
             case NOT_STARTED:
                 throw new IllegalStateException("Tried to close an election that has not started.");
             case STARTED:
-                state = ElectionState.FINISHED;
+            	central.setState(ElectionState.FINISHED); 
                 LOGGER.info("Closed election.");
                 break;
             case FINISHED:

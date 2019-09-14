@@ -21,7 +21,10 @@ public class Server {
     }
 
     public static void bindServices(){
-        final AdministrationService adminService = new AdministrationServiceImpl();
+    	
+    	ElectionCentral central = new ElectionCentral();
+    	
+        final AdministrationService adminService = new AdministrationServiceImpl(central);
 
         try {
             final Remote remoteAdmin = UnicastRemoteObject.exportObject(adminService,0);
@@ -33,7 +36,7 @@ public class Server {
             e.printStackTrace();
         } 
         
-        final VotingService votingService = new VotingServiceImpl();
+        final VotingService votingService = new VotingServiceImpl(central);
 
         try {
             final Remote remoteVoter = UnicastRemoteObject.exportObject(votingService,0);

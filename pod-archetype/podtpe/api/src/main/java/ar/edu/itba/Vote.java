@@ -1,8 +1,9 @@
 package ar.edu.itba;
 
+import java.rmi.Remote;
 import java.util.List;
 
-public class Vote {
+public class Vote implements Remote{
 	
 	private Integer tableId;
 	private Province province;

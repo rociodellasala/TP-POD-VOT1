@@ -29,11 +29,17 @@ public class VotingClient {
         /*
          * Falta hacer que reciba el path del CSV por parametro
          */
-        final VotingService handle = (VotingService) 
-        		Naming.lookup("//localhost:1099/administration-service");
         
+//        String pathToCsv = System.getProperty("votesPath");
+//        String ip = System.getProperty("serverAddress");
+        
+        
+        final VotingService handle = (VotingService) Naming.lookup("//localhost:1099/voting-service"); // desps cambiarlo con el ip q recibimos
+        
+        
+        	
         int numberOfVotes = 0;
-        String pathToCsv = "";
+        String pathToCsv = "test1.csv";
         
         List<Vote> voteList = new ArrayList<>();
         
@@ -69,9 +75,12 @@ public class VotingClient {
                 voteList.add(v);
                 
                 System.out.println("Registered vote was: ");   
+                System.out.println("Table: " + v.getTableId());
+                System.out.println("Province: " + v.getProvince().name());
                 int i = 0;
-                while(v.getRanking().get(i) != null) {
+                while(i < v.getRanking().size()) {
                 	System.out.println(i + ": " + v.getRanking().get(i).name());
+                	i++;
                 }
                 System.out.println("---------------------");
             }
