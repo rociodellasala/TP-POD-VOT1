@@ -1,4 +1,4 @@
-package ar.edu.itba.client;
+package ar.edu.itba.ManagementClient;
 
 import ar.edu.itba.AdministrationService;
 import org.slf4j.Logger;
@@ -9,8 +9,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-public class Client {
-    private static Logger logger = LoggerFactory.getLogger(Client.class);
+public class ManagementClient {
+    private static Logger logger = LoggerFactory.getLogger(ManagementClient.class);
 
     public static void main(String[] args) throws RemoteException, NotBoundException, MalformedURLException {
         logger.info("tppod Client Starting ...");

@@ -1,0 +1,6 @@
+package ar.edu.itba;
+
+public enum Party {
+	GORILLA, LEOPARD, OWL, TIGER, TARSIER, MONKEY, LYNX, WHITE_TIGER,
+	WHITE_GORILLA, SNAKE, JACKALOPE, BUFFALO​, TURTLE
+}
