@@ -1,9 +1,15 @@
 package ar.edu.itba;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.List;
 
-public class Vote implements Remote{
+public class Vote implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 146L;
 	
 	private Integer tableId;
 	private Province province;

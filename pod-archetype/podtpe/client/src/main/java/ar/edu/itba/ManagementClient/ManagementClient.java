@@ -23,6 +23,6 @@ public class ManagementClient {
         String output = String.format("The election state is %s.", state);
         System.out.println(output);
 
-        handle.close();
+     //   handle.close();
     }
 }
