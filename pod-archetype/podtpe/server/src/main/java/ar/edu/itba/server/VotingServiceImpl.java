@@ -1,17 +1,40 @@
 package ar.edu.itba.server;
 
-public class VotingServiceImpl {
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
-		/*
-		 * Por lo que entiendo aca tengo la lista completa con todos mis votos.
-		 * Si recibo lista de votos y estaba vacia la creo.
-		 * Si recibo lista de votos y ya habia algo agrego cosas. 
-		 */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ar.edu.itba.Vote;
+import ar.edu.itba.VotingService;
+
+public class VotingServiceImpl implements VotingService{
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	
 	
-	
+	private List<Vote> voteList;
 	// tmbn falta agregarlo al server
-	
+
+	public VotingServiceImpl() {
+		
+		this.voteList = new ArrayList<Vote>();
+		
+	}
+
+	@Override
+	public void vote(List<Vote> votes) throws RemoteException {
+		
+		for(Vote v: votes) {
+			this.voteList.add(v);
+		}
+		LOGGER.info("Votes added.");
+	}
+
 	// desps probar leer de CSV posta y ver q funque. 
+	
+	
 }
 

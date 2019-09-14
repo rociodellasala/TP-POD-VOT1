@@ -57,7 +57,7 @@ public class VotingClient {
                 for(String s: ranking) {
                 	Party partyVote = null;
                 	for(Party p: Party.values()) {
-                    	if(values[1].equals(p.name())) {
+                    	if(s.equals(p.name())) {
                     		partyVote = p;
                     	}
                     }
@@ -67,10 +67,18 @@ public class VotingClient {
                 
                 Vote v = new Vote(Integer.parseInt(values[0]), provinceVote, votingRanking);
                 voteList.add(v);
+                
+                System.out.println("Registered vote was: ");   
+                int i = 0;
+                while(v.getRanking().get(i) != null) {
+                	System.out.println(i + ": " + v.getRanking().get(i).name());
+                }
+                System.out.println("---------------------");
             }
         }
         
         handle.vote(voteList);
+        
         
         
         System.out.println(numberOfVotes + " votes registered.");
