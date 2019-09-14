@@ -6,10 +6,12 @@ import java.util.List;
 
 public class Vote implements Serializable{
 	
+	
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 146L;
+	private static final long serialVersionUID = 100L;
 	
 	private Integer tableId;
 	private Province province;
