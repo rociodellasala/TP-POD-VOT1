@@ -1,6 +1,7 @@
 package ar.edu.itba.server;
 
 import ar.edu.itba.AdministrationService;
+import ar.edu.itba.FiscalService;
 import ar.edu.itba.VotingService;
 import ar.edu.itba.server.AdministrationServiceImpl;
 import org.slf4j.Logger;
@@ -43,6 +44,18 @@ public class Server {
             final Registry registry = LocateRegistry.getRegistry();
             registry.rebind("voting-service", remoteVoter);
             LOGGER.info("Voting Service bound.");
+        } catch(RemoteException e) {
+            LOGGER.info("Remote exception.");
+            e.printStackTrace();
+        } 
+        
+        final FiscalService fiscalService = new FiscalServiceImpl(central);
+
+        try {
+            final Remote remoteFiscal = UnicastRemoteObject.exportObject(fiscalService,0);
+            final Registry registry = LocateRegistry.getRegistry();
+            registry.rebind("fiscal-service", remoteFiscal);
+            LOGGER.info("Fiscal Service bound.");
         } catch(RemoteException e) {
             LOGGER.info("Remote exception.");
             e.printStackTrace();

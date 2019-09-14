@@ -49,7 +49,7 @@ public class FiscalClient {
 
 
 		
-		System.out.println("Fiscal client closing.");
+		System.out.println("Fiscal of " + fiscalParty.name() + " registered at polling place " + tableId +  ".");
 		
 	}
 	

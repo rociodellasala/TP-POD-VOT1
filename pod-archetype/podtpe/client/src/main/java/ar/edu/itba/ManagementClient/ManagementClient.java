@@ -17,7 +17,7 @@ public class ManagementClient {
 
         final AdministrationService handle = (AdministrationService) Naming.lookup("//localhost:1099/administration-service");
 
-        handle.open();
+       handle.open();
 
         AdministrationService.ElectionState state = handle.getCurrentSate();
         String output = String.format("The election state is %s.", state);
