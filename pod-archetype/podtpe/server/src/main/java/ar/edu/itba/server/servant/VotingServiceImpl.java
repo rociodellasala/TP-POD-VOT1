@@ -1,4 +1,4 @@
-package ar.edu.itba.server;
+package ar.edu.itba.server.servant;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -8,13 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ar.edu.itba.Vote;
-import ar.edu.itba.VotingService;
+import ar.edu.itba.exceptions.InvalidVoteOperationException;
+import ar.edu.itba.remoteinterfaces.VotingService;
+import ar.edu.itba.server.ElectionCentral;
+import ar.edu.itba.server.Server;
 
-public class VotingServiceImpl implements VotingService{
-
+public class VotingServiceImpl implements VotingService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
-	
-	
 	
 	private ElectionCentral central;
 	// tmbn falta agregarlo al server
@@ -26,8 +26,7 @@ public class VotingServiceImpl implements VotingService{
 	}
 
 	@Override
-	public void vote(List<Vote> votes) throws RemoteException {
-		
+	public void vote(List<Vote> votes) throws RemoteException, InvalidVoteOperationException {
 		central.addVotes(votes);
 		LOGGER.info("Votes added.");
 		

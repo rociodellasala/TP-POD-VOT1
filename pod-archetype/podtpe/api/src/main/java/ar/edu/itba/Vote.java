@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.List;
 
+import ar.edu.itba.utils.Party;
+import ar.edu.itba.utils.Province;
+
 public class Vote implements Serializable{
 	
 	

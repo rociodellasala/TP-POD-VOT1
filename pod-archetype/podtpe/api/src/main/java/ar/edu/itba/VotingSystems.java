@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import ar.edu.itba.utils.Party;
+import ar.edu.itba.utils.Province;
+
 public class VotingSystems {
 	
 	public static final double AV_FLOOR = 45.0;

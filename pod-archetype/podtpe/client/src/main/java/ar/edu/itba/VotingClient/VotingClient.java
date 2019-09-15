@@ -3,20 +3,19 @@ package ar.edu.itba.VotingClient;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.edu.itba.Party;
-import ar.edu.itba.Province;
+import ar.edu.itba.utils.Party;
+import ar.edu.itba.utils.Province;
 import ar.edu.itba.Vote;
-import ar.edu.itba.VotingService;
+import ar.edu.itba.exceptions.InvalidVoteOperationException;
+import ar.edu.itba.remoteinterfaces.VotingService;
 
 
 public class VotingClient {
@@ -86,7 +85,12 @@ public class VotingClient {
             }
         }
         
-        handle.vote(voteList);
+        try {
+			handle.vote(voteList);
+		} catch (InvalidVoteOperationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         
         
