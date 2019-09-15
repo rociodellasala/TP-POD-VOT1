@@ -1,5 +1,6 @@
 package ar.edu.itba.AdministrationClient;
 
+import ar.edu.itba.Action;
 import ar.edu.itba.exceptions.InvalidStateException;
 import ar.edu.itba.remoteinterfaces.AdministrationService;
 import ar.edu.itba.utils.ElectionState;
@@ -25,13 +26,12 @@ public class AdministrationClient {
     }
     
     private static void getSystemProperties() {
-    	actionNameInput = Action.valueOf(System.getProperty("action"));
     	serverAddressInput = System.getProperty("serverAddress");
+    	actionNameInput = Action.valueOf(System.getProperty("action"));
     }
     
     private static void getActionDone() throws InvalidStateException {
-
-        try {
+    	try {
         	String ip = "//" + serverAddressInput + "/" + "administration-service";
 			final AdministrationService handle = (AdministrationService) 
 						Naming.lookup(ip);

@@ -12,11 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import ar.edu.itba.remoteinterfaces.FiscalService;
 import ar.edu.itba.utils.Party;
-import ar.edu.itba.VotingClient.VotingClient;
 import ar.edu.itba.exceptions.InvalidFiscalEnrollmentException;
 
 public class FiscalClient {
-	private static Logger logger = LoggerFactory.getLogger(VotingClient.class);
+	private static Logger logger = LoggerFactory.getLogger(FiscalClient.class);
 	private static String serverAddressInput;
 	private static Integer idInput;
 	private static String partyInput;
@@ -29,6 +28,20 @@ public class FiscalClient {
 		getSystemProperties();
 		getParty();
 		registerFiscal();
+	}
+	
+	private static void getSystemProperties() {
+    	serverAddressInput = System.getProperty("serverAddress");
+    	idInput = Integer.valueOf(System.getProperty("id"));
+    	partyInput = System.getProperty("party");
+    }
+	
+	private static void getParty() {
+		for(Party p: Party.values()) {
+			if(p.name().equals(partyInput)) {
+				fiscalParty = p;
+			}
+		}
 	}
 		
 	public static void registerFiscal() {
@@ -48,21 +61,5 @@ public class FiscalClient {
 
 		System.out.println("Fiscal of " + fiscalParty.name() + " registered at polling place " + idInput +  ".");
 	}
-	
-	private static void getSystemProperties() {
-    	serverAddressInput = System.getProperty("serverAddress");
-    	idInput = Integer.valueOf(System.getProperty("id"));
-    	partyInput = System.getProperty("party");
-    }
-	
-	private static void getParty() {
-		for(Party p: Party.values()) {
-			if(p.name().equals(partyInput)) {
-				fiscalParty = p;
-			}
-		}
-	}
-	
-	
 	
 }

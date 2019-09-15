@@ -27,6 +27,7 @@ public class Server {
     	bindAdministrationService(central);
     	bindFiscalService(central);
     	bindVotingService(central);
+    	bindQueryService(central);
     }
    
     public static void bindAdministrationService(ElectionCentral central) {
@@ -65,6 +66,20 @@ public class Server {
             final Registry registry = LocateRegistry.getRegistry();
             registry.rebind("voting-service", remoteVoter);
             LOGGER.info("Voting service bound");
+        } catch(RemoteException e) {
+            LOGGER.info("Remote exception");
+            e.printStackTrace();
+        } 
+    }
+    
+    public static void bindQueryService(ElectionCentral central) {
+        final QueryService queryService = new QueryServiceImpl(central);
+
+        try {
+            final Remote remoteQuery = UnicastRemoteObject.exportObject(queryService, port);
+            final Registry registry = LocateRegistry.getRegistry();
+            registry.rebind("query-service", remoteQuery);
+            LOGGER.info("Query service bound");
         } catch(RemoteException e) {
             LOGGER.info("Remote exception");
             e.printStackTrace();

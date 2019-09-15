@@ -23,6 +23,10 @@ public class ElectionCentral {
 		return this.currentState;
 	}
 	
+	public List<Vote> getVotes() {
+		return this.voteList;
+	}
+	
 	public void setState(ElectionState newState) {
 		this.currentState = newState;
 	}

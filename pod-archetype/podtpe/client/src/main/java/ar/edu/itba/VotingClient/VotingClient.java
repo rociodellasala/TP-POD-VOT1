@@ -1,10 +1,13 @@
 package ar.edu.itba.VotingClient;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,33 +22,29 @@ import ar.edu.itba.remoteinterfaces.VotingService;
 
 
 public class VotingClient {
-	
     private static Logger logger = LoggerFactory.getLogger(VotingClient.class);
-
+    private static String serverAddressInput;
+	private static String votesPathInput;
+	private static List<Vote> voteList;
+	    
     public static void main(String[] args) throws NotBoundException, NumberFormatException, IOException {
-        logger.info("tppod voting client Starting ...");
-
-        /*
-         * Falta hacer que reciba el path del CSV por parametro
-         */
+        logger.info("Voting client is starting ...");
+        getSystemProperties();
+        int number = readVotes();
+        vote(number);
+    }
+    
+    private static void getSystemProperties() {
+    	serverAddressInput = System.getProperty("serverAddress");
+    	votesPathInput = System.getProperty("votesPath");
+    }
         
-//        String pathToCsv = System.getProperty("votesPath");
-//        String ip = System.getProperty("serverAddress");
-        
-        
-        final VotingService handle = (VotingService) Naming.lookup("//localhost:1099/voting-service"); // desps cambiarlo con el ip q recibimos
-        
-        
-        	
+  	private static int readVotes() throws FileNotFoundException, IOException {
         int numberOfVotes = 0;
-        String pathToCsv = "test1.csv";
         
-        List<Vote> voteList = new ArrayList<>();
+        voteList = new ArrayList<>();
         
-        /*
-         * Parseo datos del CSV.
-         */
-        try (BufferedReader br = new BufferedReader(new FileReader(pathToCsv))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(votesPathInput))) {
             String line;
             while ((line = br.readLine()) != null) {
             	numberOfVotes++;
@@ -85,15 +84,19 @@ public class VotingClient {
             }
         }
         
-        try {
+        return numberOfVotes;
+  	}
+  	
+  	private static void vote(int numberOfVotes) {
+  		try {
+        	String ip = "//" + serverAddressInput + "/" + "voting-service";
+			final VotingService handle = (VotingService) Naming.lookup(ip);
 			handle.vote(voteList);
-		} catch (InvalidVoteOperationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (InvalidVoteOperationException | MalformedURLException | RemoteException | NotBoundException e) {
+			System.err.println(e.getMessage());
+			System.exit(-1);
 		}
-        
-        
-        
+       
         System.out.println(numberOfVotes + " votes registered.");
     }
 

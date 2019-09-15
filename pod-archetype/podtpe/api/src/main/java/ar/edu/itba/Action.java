@@ -1,4 +1,4 @@
-package ar.edu.itba.AdministrationClient;
+package ar.edu.itba;
 
 public enum Action {
 	open, close, state
