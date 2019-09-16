@@ -20,7 +20,7 @@ import ar.edu.itba.utils.Province;
 public class QueryClient {
 	private static Logger logger = LoggerFactory.getLogger(QueryClient.class);
 	private static String serverAddressInput;
-	private static Optional<Integer> optionalIdInput;
+	private static Optional<String> optionalIdInput;
 	private static Optional<String> optionalStateInput;
 	private static String outPathInput = "./";
 	private static Integer idInput;
@@ -42,7 +42,7 @@ public class QueryClient {
     
     private static void getSystemProperties() throws InvalidQueryParametersException {
     	serverAddressInput = System.getProperty("serverAddress");
-    	optionalIdInput = Optional.ofNullable(Integer.valueOf(System.getProperty("id")));
+    	optionalIdInput = Optional.ofNullable(System.getProperty("id"));
     	optionalStateInput = Optional.ofNullable(System.getProperty("state"));
     	StringBuilder str = new StringBuilder();
     	str.append(outPathInput);
@@ -52,8 +52,8 @@ public class QueryClient {
     	if (optionalIdInput.isPresent() && optionalStateInput.isPresent()) {
     		throw new InvalidQueryParametersException("You cannot consult for id and state at the same time");
     	} else if (optionalIdInput.isPresent()) {
-    		idInput = optionalIdInput.get();
-    	} else {
+    		idInput = Integer.valueOf(optionalIdInput.get());
+    	} else if (optionalStateInput.isPresent()) {
     		stateInput = optionalStateInput.get();
     	}
     }
@@ -64,9 +64,9 @@ public class QueryClient {
         	
 			final QueryService handle = (QueryService) 
 						Naming.lookup(ip);
-			
 			if (idInput == null && stateInput == null) {
-				queryResults = handle.percentageAtNationalLevel();
+				queryResults = handle.percentageAtNationalLevel();	
+				System.out.println(queryResults);
 			} else if (stateInput != null) {
 				Province province = Province.valueOf(stateInput);
 				queryResults =  handle.percentageAtProvincialLevel(province);

@@ -8,14 +8,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ar.edu.itba.Vote;
 import ar.edu.itba.utils.Party;
 import ar.edu.itba.utils.Province;
 
 public class VotingSystems {	
-	public static final double AV_FLOOR = 45.0;
+	public static final double AV_FLOOR = 50.0;
 	public static final double STV_FLOOR = 45.0;
-
+	private static Logger LOGGER = LoggerFactory.getLogger(Server.class);
+	
 	// Falta hacer AV y STV!
 	
 	/*
@@ -67,10 +71,9 @@ public class VotingSystems {
 	 */
 	public Map<Party, Integer> AV(List<Vote> votes) {
 		Map<Party, Integer> results = new HashMap<>();
-		
 		for (Vote v: votes) {
 			Party p = v.getRanking().get(0);
-			if (p != null) {
+			if (results.containsKey(p)) { 
 				results.put(p, results.get(p) + 1);
 			} else {
 				results.put(p, 1);
@@ -82,14 +85,18 @@ public class VotingSystems {
 			total = total + results.get(p);
 		}
 		
+		
 		boolean finished = false;
 		int rankingPosition = 1; // empiezo en la 1 pq la 0 ya la tome antes
 		
-		while (finished != true && rankingPosition <= 5) {
+		while (finished != true && rankingPosition <= 2) {
 			Party leastVoted = null;
 			
 			for (Party p: results.keySet()) {
-				if ((results.get(p)/total) >= AV_FLOOR) {
+				if ((((double) results.get(p)/ (double) total)*100) >= AV_FLOOR) {
+					LOGGER.info("Encontrado el ganador es " + p.name());
+					double aux = ((results.get(p)/total)*100) ;
+					LOGGER.info("Porcentaje fue " + aux);
 					finished = true;
 				}
 				
@@ -100,21 +107,45 @@ public class VotingSystems {
 						leastVoted = p;
 					}
 				}
+				
+				LOGGER.info("No ganador:  " + p.name());
+				double aux = (((double) results.get(p)/ (double) total)*100) ;
+				LOGGER.info("Porcentaje fue " + aux);
+				LOGGER.info("-------------------");
 			}
 			
+			LOGGER.info("MENOS VOTADO FUE :  " + leastVoted.name());
+
 			if (finished != true) {
 				// tomo el candidato de menor cantidad de votos
 				//actualizo results
+				/*
+				 * Hay un problema con la logica.
+				 * Cuando voy por el segundo menos votad o (leopard)
+				 * Tengo que tomar desde la segunda opcion (1) de ese y eso no estaria ahceindolo
+				 * tnego q hcer tmbn q cuando eliminan un voto q ya le elminaron la primea opicon, que tome la tercera
+				 */
 				for (Vote v: votes) {
-					if (v.getRanking().get(rankingPosition - 1).equals(leastVoted)) {
+					if (v.getRanking().size() > rankingPosition &&  v.getRanking().get(rankingPosition - 1).equals(leastVoted)) {
 						results.put(leastVoted, results.get(leastVoted) - 1);
-						Party newParty = v.getRanking().get(rankingPosition - 1);
-						results.put(newParty, results.get(newParty) + 1);
+						Party newParty = v.getRanking().get(rankingPosition);
+						if(results.containsKey(newParty)) {
+							results.put(newParty, results.get(newParty) + 1);
+						} else {
+							results.put(newParty, 1);
+						}
+						
 					}
 				}
+				
+				results.remove(leastVoted);
 
 			}
+			
+			
+			rankingPosition++;
 		}
+		
 		
 		return results;
 		
