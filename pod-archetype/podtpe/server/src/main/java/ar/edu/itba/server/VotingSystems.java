@@ -70,7 +70,10 @@ public class VotingSystems {
 	 * Desps con el mapa q devuelve llamar a resultString
 	 */
 	public Map<Party, Integer> AV(List<Vote> votes) {
+		
+		List<Party> removedParties = new ArrayList<>();
 		Map<Party, Integer> results = new HashMap<>();
+		
 		for (Vote v: votes) {
 			Party p = v.getRanking().get(0);
 			if (results.containsKey(p)) { 
@@ -89,14 +92,14 @@ public class VotingSystems {
 		boolean finished = false;
 		int rankingPosition = 1; // empiezo en la 1 pq la 0 ya la tome antes
 		
-		while (finished != true && rankingPosition <= 2) {
+		while (finished != true /*&& rankingPosition <= 2*/) {
 			Party leastVoted = null;
 			
 			for (Party p: results.keySet()) {
 				if ((((double) results.get(p)/ (double) total)*100) >= AV_FLOOR) {
 					LOGGER.info("Encontrado el ganador es " + p.name());
 					double aux = ((results.get(p)/total)*100) ;
-					LOGGER.info("Porcentaje fue " + aux);
+					//LOGGER.info("Porcentaje fue " + aux);
 					finished = true;
 				}
 				
@@ -115,6 +118,7 @@ public class VotingSystems {
 			}
 			
 			LOGGER.info("MENOS VOTADO FUE :  " + leastVoted.name());
+			removedParties.add(leastVoted);
 
 			if (finished != true) {
 				// tomo el candidato de menor cantidad de votos
@@ -126,8 +130,40 @@ public class VotingSystems {
 				 * tnego q hcer tmbn q cuando eliminan un voto q ya le elminaron la primea opicon, que tome la tercera
 				 */
 				for (Vote v: votes) {
-					if (v.getRanking().size() > rankingPosition &&  v.getRanking().get(rankingPosition - 1).equals(leastVoted)) {
+					int k = 0;
+					boolean cut = false;
+					while(k < v.getRanking().size() && cut != true) {
+						LOGGER.info("2CUT ES " + cut);;
+						boolean found = false;
+						boolean doNotSearch = false;
+						int auxi = 0;
+						while(auxi < rankingPosition) {
+							if(v.getRanking().size() > auxi && v.getRanking().get(auxi).equals(leastVoted)) {
+								found = true;
+							}
+							if(v.getRanking().size() > auxi && !removedParties.contains(v.getRanking().get(auxi))) {
+								doNotSearch = true;
+							}
+							auxi++;
+						}
+						
+						if(doNotSearch && found && !removedParties.contains(v.getRanking().get(k))) {
+							Party newParty = v.getRanking().get(k);
+							if(results.containsKey(newParty)) {
+								results.put(newParty, results.get(newParty) + 1);
+								LOGGER.info("Sumando voto a " + newParty.name());
+							} else {
+								results.put(newParty, 1);
+								LOGGER.info("Sumando voto a " + newParty.name());
+							}
+							cut = true;
+							LOGGER.info("CUT ES " + cut);;
+						}
+						k++;
+					}
+					/*if (v.getRanking().size() > rankingPosition &&  v.getRanking().get(rankingPosition - 1).equals(leastVoted)) {
 						results.put(leastVoted, results.get(leastVoted) - 1);
+						
 						Party newParty = v.getRanking().get(rankingPosition);
 						if(results.containsKey(newParty)) {
 							results.put(newParty, results.get(newParty) + 1);
@@ -135,9 +171,9 @@ public class VotingSystems {
 							results.put(newParty, 1);
 						}
 						
-					}
+					}*/
 				}
-				
+				LOGGER.info("******************");
 				results.remove(leastVoted);
 
 			}
