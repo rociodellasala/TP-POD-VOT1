@@ -16,12 +16,23 @@ public class Vote implements Serializable {
 	private Integer tableId;
 	private Province province;
 	private List<Party> ranking;
+	int current; // solo para utilizar como auxiliar, para saber que lugar del ranking estoy tomando
 	
+
 	public Vote(Integer tableId, Province province, List<Party> ranking) {
 		super();
 		this.tableId = tableId;
 		this.province = province;
 		this.ranking = ranking;
+		this.current = 0;
+	}
+	
+	public int getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(int current) {
+		this.current = current;
 	}
 	
 	public Integer getTableId() {

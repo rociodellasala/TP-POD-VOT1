@@ -73,8 +73,10 @@ public class VotingSystems {
 		
 		List<Party> removedParties = new ArrayList<>();
 		Map<Party, Integer> results = new HashMap<>();
+		Map<Vote, Integer> votesMap = new HashMap<>();
 		
 		for (Vote v: votes) {
+			v.setCurrent(0);
 			Party p = v.getRanking().get(0);
 			if (results.containsKey(p)) { 
 				results.put(p, results.get(p) + 1);
@@ -99,7 +101,6 @@ public class VotingSystems {
 				if ((((double) results.get(p)/ (double) total)*100) >= AV_FLOOR) {
 					LOGGER.info("Encontrado el ganador es " + p.name());
 					double aux = ((results.get(p)/total)*100) ;
-					//LOGGER.info("Porcentaje fue " + aux);
 					finished = true;
 				}
 				
@@ -111,75 +112,33 @@ public class VotingSystems {
 					}
 				}
 				
-				LOGGER.info("No ganador:  " + p.name());
-				double aux = (((double) results.get(p)/ (double) total)*100) ;
-				LOGGER.info("Porcentaje fue " + aux);
-				LOGGER.info("-------------------");
 			}
 			
 			LOGGER.info("MENOS VOTADO FUE :  " + leastVoted.name());
-			removedParties.add(leastVoted);
 
 			if (finished != true) {
 				// tomo el candidato de menor cantidad de votos
 				//actualizo results
-				/*
-				 * Hay un problema con la logica.
-				 * Cuando voy por el segundo menos votad o (leopard)
-				 * Tengo que tomar desde la segunda opcion (1) de ese y eso no estaria ahceindolo
-				 * tnego q hcer tmbn q cuando eliminan un voto q ya le elminaron la primea opicon, que tome la tercera
-				 */
 				for (Vote v: votes) {
-					int k = 0;
-					boolean cut = false;
-					while(k < v.getRanking().size() && cut != true) {
-						LOGGER.info("2CUT ES " + cut);;
-						boolean found = false;
-						boolean doNotSearch = false;
-						int auxi = 0;
-						while(auxi < rankingPosition) {
-							if(v.getRanking().size() > auxi && v.getRanking().get(auxi).equals(leastVoted)) {
-								found = true;
-							}
-							if(v.getRanking().size() > auxi && !removedParties.contains(v.getRanking().get(auxi))) {
-								doNotSearch = true;
-							}
-							auxi++;
-						}
+					if(v.getRanking().get(v.getCurrent()).equals(leastVoted)) {
 						
-						if(doNotSearch && found && !removedParties.contains(v.getRanking().get(k))) {
-							Party newParty = v.getRanking().get(k);
-							if(results.containsKey(newParty)) {
-								results.put(newParty, results.get(newParty) + 1);
-								LOGGER.info("Sumando voto a " + newParty.name());
-							} else {
-								results.put(newParty, 1);
-								LOGGER.info("Sumando voto a " + newParty.name());
-							}
-							cut = true;
-							LOGGER.info("CUT ES " + cut);;
-						}
-						k++;
-					}
-					/*if (v.getRanking().size() > rankingPosition &&  v.getRanking().get(rankingPosition - 1).equals(leastVoted)) {
-						results.put(leastVoted, results.get(leastVoted) - 1);
-						
-						Party newParty = v.getRanking().get(rankingPosition);
+						v.setCurrent(v.getCurrent()+1);
+						Party newParty = v.getRanking().get(v.getCurrent());
 						if(results.containsKey(newParty)) {
 							results.put(newParty, results.get(newParty) + 1);
 						} else {
 							results.put(newParty, 1);
 						}
-						
-					}*/
+					}
 				}
-				LOGGER.info("******************");
 				results.remove(leastVoted);
 
 			}
 			
-			
-			rankingPosition++;
+		}
+		
+		for(Vote v: votes) {
+			v.setCurrent(0);
 		}
 		
 		
