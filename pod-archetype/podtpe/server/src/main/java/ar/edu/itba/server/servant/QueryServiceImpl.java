@@ -1,6 +1,7 @@
 package ar.edu.itba.server.servant;
 
 import java.rmi.RemoteException;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import ar.edu.itba.server.ElectionCentral;
 import ar.edu.itba.server.Server;
 import ar.edu.itba.server.VotingSystems;
 import ar.edu.itba.utils.ElectionState;
+import ar.edu.itba.utils.Party;
 import ar.edu.itba.utils.Province;
 
 
@@ -18,6 +20,7 @@ public class QueryServiceImpl implements QueryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
     private ElectionCentral central;
     private VotingSystems vt;
+    private Map<Party, Integer> mapResult;
 
     public QueryServiceImpl(ElectionCentral central) {
     	this.central = central;
@@ -25,29 +28,33 @@ public class QueryServiceImpl implements QueryService {
     }
 
 	@Override
-	public void percentageAtNationalLevel() throws RemoteException, InvalidQueryMomentException {
+	public String percentageAtNationalLevel() throws RemoteException, InvalidQueryMomentException {
 		checkIfElectionsAreNotClosed();
 		if (central.getState().equals(ElectionState.OPENED)) {
-			vt.FPTP(vt.totalVotes(central.getVotes()));
+			mapResult = vt.FPTP(VotingSystems.totalVotes(central.getVotes()));
+			return vt.resultString(mapResult);
 		} else {
-			vt.AV(central.getVotes());
+			mapResult = vt.AV(central.getVotes());
+			return vt.resultString(mapResult);
 		}
 	}
 
 	@Override
-	public void percentageAtProvincialLevel(Province province) throws RemoteException, InvalidQueryMomentException {
+	public String percentageAtProvincialLevel(Province province) throws RemoteException, InvalidQueryMomentException {
 		checkIfElectionsAreNotClosed();
-		if (central.getState().equals(ElectionState.OPENED)) {
-			vt.provinceVotes(central.getVotes(), province);
-		} else {
+		//if (central.getState().equals(ElectionState.OPENED)) {
+			mapResult = VotingSystems.provinceVotes(central.getVotes(), province);
+			return vt.resultString(mapResult);
+		//s} //else {
 			//TODO:STV
-		}
+			//}
 	}
 
 	@Override
-	public void percentageAtTableLevel(Integer id) throws RemoteException, InvalidQueryMomentException {
+	public String percentageAtTableLevel(Integer id) throws RemoteException, InvalidQueryMomentException {
 		checkIfElectionsAreNotClosed();
-		vt.FPTP(vt.tableVotes(central.getVotes(), id));
+		mapResult = vt.FPTP(VotingSystems.tableVotes(central.getVotes(), id));
+		return vt.resultString(mapResult);
 }
 	
 	public void checkIfElectionsAreNotClosed() throws InvalidQueryMomentException {

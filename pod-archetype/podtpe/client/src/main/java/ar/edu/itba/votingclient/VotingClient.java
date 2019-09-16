@@ -1,4 +1,4 @@
-package ar.edu.itba.VotingClient;
+package ar.edu.itba.votingclient;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

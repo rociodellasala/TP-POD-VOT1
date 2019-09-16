@@ -22,9 +22,10 @@ public class VotingSystems {
 	 * Llamar esto con lo q devuelve FPTP.
 	 */
 	public String resultString(Map<Party, Integer> sortedMap) {
-		int total = 0;
+		double total = 0.0;
+		
 		for (Party p: sortedMap.keySet()) {
-			total = total + sortedMap.get(p);
+			total += sortedMap.get(p);
 		}
 		
 		StringBuilder builder = new StringBuilder()
@@ -130,7 +131,8 @@ public class VotingSystems {
 		
 		for (Vote v: votes) {
 			Party p = v.getRanking().get(0);
-			if (p != null) {
+			
+			if (results.containsKey(p)) {
 				results.put(p, results.get(p) + 1);
 			} else {
 				results.put(p, 1);

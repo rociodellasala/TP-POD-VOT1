@@ -15,7 +15,7 @@ public class Vote implements Serializable {
 	
 	private Integer tableId;
 	private Province province;
-	List<Party> ranking;
+	private List<Party> ranking;
 	
 	public Vote(Integer tableId, Province province, List<Party> ranking) {
 		super();

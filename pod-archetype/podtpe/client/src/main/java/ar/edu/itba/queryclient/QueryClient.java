@@ -1,5 +1,7 @@
-package ar.edu.itba.QueryClient;
+package ar.edu.itba.queryclient;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -20,27 +22,32 @@ public class QueryClient {
 	private static String serverAddressInput;
 	private static Optional<Integer> optionalIdInput;
 	private static Optional<String> optionalStateInput;
-	private static String outPathInput;
+	private static String outPathInput = "./";
 	private static Integer idInput;
 	private static String stateInput;
+	 private static String queryResults;
     
     public static void main(String[] args) throws RemoteException, 
     NotBoundException, MalformedURLException {
     	logger.info("Query client is starting");
         try {
 			getSystemProperties();
-		} catch (InvalidQueryParametersException e) {
+			getResults();
+		    writeOutputResults();
+		} catch (InvalidQueryParametersException | IOException e) {
 			System.err.println(e.getMessage());
 			System.exit(-1);
 		}
-        getResults();
     }
     
     private static void getSystemProperties() throws InvalidQueryParametersException {
     	serverAddressInput = System.getProperty("serverAddress");
     	optionalIdInput = Optional.ofNullable(Integer.valueOf(System.getProperty("id")));
     	optionalStateInput = Optional.ofNullable(System.getProperty("state"));
-    	outPathInput = System.getProperty("outPath");
+    	StringBuilder str = new StringBuilder();
+    	str.append(outPathInput);
+    	str.append(System.getProperty("outPath"));
+    	outPathInput = str.toString();
     	
     	if (optionalIdInput.isPresent() && optionalStateInput.isPresent()) {
     		throw new InvalidQueryParametersException("You cannot consult for id and state at the same time");
@@ -54,15 +61,18 @@ public class QueryClient {
     private static void getResults() {
     	try {
         	String ip = "//" + serverAddressInput + "/" + "query-service";
+        	
 			final QueryService handle = (QueryService) 
 						Naming.lookup(ip);
+			
 			if (idInput == null && stateInput == null) {
-				handle.percentageAtNationalLevel();
+				queryResults = handle.percentageAtNationalLevel();
 			} else if (stateInput != null) {
 				Province province = Province.valueOf(stateInput);
-				handle.percentageAtProvincialLevel(province);
+				queryResults =  handle.percentageAtProvincialLevel(province);
 			} else {
-				handle.percentageAtTableLevel(idInput);
+				queryResults = handle.percentageAtTableLevel(idInput);
+				System.out.println(queryResults);
 			}
 		} catch (MalformedURLException | NotBoundException | RemoteException | InvalidQueryMomentException e) {
 			System.err.println(e.getMessage());
@@ -70,4 +80,9 @@ public class QueryClient {
 		} 
     }
     
+    private static void writeOutputResults() throws IOException {
+    	FileWriter fw = new FileWriter(outPathInput);
+    	fw.write(queryResults);
+    	fw.close();
+    }
 } 

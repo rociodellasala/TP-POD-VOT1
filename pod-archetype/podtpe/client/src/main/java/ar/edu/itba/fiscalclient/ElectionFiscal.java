@@ -1,4 +1,4 @@
-package ar.edu.itba.FiscalClient;
+package ar.edu.itba.fiscalclient;
 
 import ar.edu.itba.Detector;
 import ar.edu.itba.utils.Party;

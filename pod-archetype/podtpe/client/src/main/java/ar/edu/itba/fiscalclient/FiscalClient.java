@@ -1,4 +1,4 @@
-package ar.edu.itba.FiscalClient;
+package ar.edu.itba.fiscalclient;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

@@ -7,7 +7,7 @@ import ar.edu.itba.exceptions.InvalidQueryMomentException;
 import ar.edu.itba.utils.Province;
 
 public interface QueryService extends Remote {
-	void percentageAtNationalLevel() throws RemoteException, InvalidQueryMomentException;
-	void percentageAtProvincialLevel(Province province) throws RemoteException, InvalidQueryMomentException;
-	void percentageAtTableLevel(Integer id) throws RemoteException, InvalidQueryMomentException;
+	String percentageAtNationalLevel() throws RemoteException, InvalidQueryMomentException;
+	String percentageAtProvincialLevel(Province province) throws RemoteException, InvalidQueryMomentException;
+	String percentageAtTableLevel(Integer id) throws RemoteException, InvalidQueryMomentException;
 }

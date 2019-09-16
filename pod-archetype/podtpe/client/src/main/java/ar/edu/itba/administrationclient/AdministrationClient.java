@@ -1,4 +1,4 @@
-package ar.edu.itba.AdministrationClient;
+package ar.edu.itba.administrationclient;
 
 import ar.edu.itba.Action;
 import ar.edu.itba.exceptions.InvalidStateException;
