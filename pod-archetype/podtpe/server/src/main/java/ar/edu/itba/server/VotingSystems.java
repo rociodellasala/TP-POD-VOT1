@@ -20,7 +20,24 @@ public class VotingSystems {
 	public static final double STV_FLOOR = 45.0;
 	private static Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	
-	// Falta hacer AV y STV!
+	public String resultStringSTV(Map<Party, Double> sortedMap) {
+		double total = 0.0;
+		
+		StringBuilder builder = new StringBuilder()
+                .append("Porcentaje;Partido")
+                .append("\r\n");
+		
+		for (Party p: sortedMap.keySet()) {
+    		double percentage = sortedMap.get(p);
+            builder.append(p)
+            .append(";")
+            .append(percentage)
+            .append("%")
+            .append("\r\n");
+		}
+    
+		return builder.toString();
+	}
 	
 	/*
 	 * Llamar esto con lo q devuelve FPTP.
@@ -64,6 +81,199 @@ public class VotingSystems {
 		return sortedMap;
 	}
 	
+	
+	
+	
+	private class VotingSet {
+		
+		List<Vote> firstChoiceVotes;
+		List<Vote> secondChoiceVotes;
+		List<Vote> thirdChoiceVotes;
+		Party party;
+		double percentage;
+		int total;
+		
+		public VotingSet(Party party, int total) {
+			super();
+			this.firstChoiceVotes =  new ArrayList<>();
+			this.secondChoiceVotes = new ArrayList<>();
+			this.thirdChoiceVotes = new ArrayList<>();
+			this.party = party;
+			this.total = total;
+		}
+		
+		public void setPercentage() {
+			this.percentage = (double) firstChoiceVotes.size() / (double) total;
+		}
+		
+		
+	}
+	
+	/*
+	 * Si estoy transfiriendo es porque tengo votos de mas. 
+	 */
+	public void transferVotes(Party from, VotingSet vs ,double percentageToTransfer, Map<Party, VotingSet> auxiMap, int total) {
+		
+		Map<Party, Integer> countMap = new HashMap<>();
+		vs.percentage = 20.0;
+		//int currentFromVotes = vs.firstChoiceVotes.size() + vs.secondChoiceVotes.size() + vs.thirdChoiceVotes.size();
+		
+		for(Vote v: vs.firstChoiceVotes) {
+			if(v.getRanking().size() > 1) {
+				v.setCurrent(v.getCurrent()+1);
+				Party newParty = v.getRanking().get(v.getCurrent());
+				
+				if(countMap.containsKey(newParty)) {
+					countMap.put(newParty, countMap.get(newParty) + 1);
+				} else {
+					countMap.put(newParty, 1);
+				}
+				
+				if(auxiMap.containsKey(newParty)) {
+					auxiMap.get(newParty).secondChoiceVotes.add(v);
+				} else {
+					VotingSet newVs = new VotingSet(newParty, total);
+					newVs.secondChoiceVotes.add(v);
+					auxiMap.put(newParty, newVs);
+				}
+				
+			}	
+		}
+		
+		for(Vote v: vs.secondChoiceVotes) {
+			if(v.getRanking().size() > 2) {
+				v.setCurrent(v.getCurrent()+1);
+				Party newParty = v.getRanking().get(v.getCurrent());
+				if(countMap.containsKey(newParty)) {
+					countMap.put(newParty, countMap.get(newParty) + 1);
+				} else {
+					countMap.put(newParty, 1);
+				}
+				//auxiMap.get(newParty).thirdChoiceVotes.add(v);
+			}
+		}
+		
+		
+		for(Party p: countMap.keySet()) {
+			auxiMap.get(p).percentage += countMap.get(p)/total;
+		}
+		
+		
+	}
+	
+	public Map<Party, Double> STV(List<Vote> totalVotes, Province province) {
+		
+		/* 
+		 * Total es mi cantidad total de votos
+		 */
+		int total = 0;
+		List<Party> currentlyInRace = new ArrayList<>();
+		Map<Party, VotingSet> auxiMap = new HashMap<>();
+		
+		
+		for(Party p: Party.values()) {
+			currentlyInRace.add(p);
+		}
+		
+		/* Primero tomo los votos de mi provincia */
+		List<Vote> votes = new ArrayList<>();
+		for(Vote v: totalVotes) {
+			if(v.getProvince().equals(province)) {
+				v.setCurrent(0);
+				votes.add(v);
+				total++;
+			}
+		}
+		
+		
+		
+		Map<Party, Double> results = new HashMap<>();
+		
+		double STV_FLOOR = 100.0/5.0; //20%
+		int totalWinners = 0;
+		
+		/*
+		 * Resultados iniciales, en porcentaje
+		 */
+		for (Vote v: votes) {
+			Party p = v.getRanking().get(0);
+			if(!auxiMap.containsKey(p)) {
+				VotingSet vs = new VotingSet(p, total);
+				auxiMap.put(p, vs);
+			}
+			auxiMap.get(p).firstChoiceVotes.add(v);
+			if (results.containsKey(p)) { 
+				results.put(p, results.get(p) + ((double) 1/ (double) total)*100);
+			} else {
+				results.put(p, ((double) 1/ (double) total)*100);
+			}
+		}
+		
+		/*
+		 * seteo los porcentajes iniciales en cada votingset
+		 */
+		for(Party p: auxiMap.keySet()) {
+			auxiMap.get(p).setPercentage(); // lo llamo ahora pq ya pse todos los votos
+		}
+		
+	
+		
+		//int votesToWin = (int)  ((STV_FLOOR*((double) total)) / 100.0);
+		
+		while(totalWinners != 5 && results.keySet().size() >= 5) {
+			
+			boolean winnerFound = false;
+			Party leastVoted = null;
+			Party winner = null;
+			
+			for (Party p: results.keySet()) {
+				if (results.get(p) > STV_FLOOR) {
+					LOGGER.info("Encontrado un ganador es " + p.name());
+					winnerFound = true;
+					winner = p;
+					totalWinners++;
+					results.put(p, 20.0);
+					currentlyInRace.remove(p); // lo saco de la carrera, pues ya gano
+				}
+				
+				if (leastVoted == null) {
+					leastVoted = p;
+				} else {
+					if (results.get(leastVoted) > results.get(p)) {
+						leastVoted = p;
+					}
+				}
+				
+			}
+			
+			if(winnerFound) {
+				VotingSet aux= auxiMap.get(winner);
+				transferVotes(winner, aux, aux.percentage - STV_FLOOR, auxiMap, total);
+			}
+			
+			else {
+				if(leastVoted != null) {
+					
+					VotingSet aux = auxiMap.get(leastVoted);
+					transferVotes(leastVoted, aux, aux.percentage, auxiMap, total);
+					results.remove(leastVoted);
+					currentlyInRace.remove(leastVoted);
+
+				}
+			}
+			
+		}
+		
+		
+		for(Vote v: votes) {
+			v.setCurrent(0);
+		}
+		
+		return results;
+		
+	}
+	
+	
 	/*
 	 * Aca no uso totalVotes ni nada de eso.
 	 * Llamo directamente  a AV con todo el listado de votos.
@@ -71,9 +281,7 @@ public class VotingSystems {
 	 */
 	public Map<Party, Integer> AV(List<Vote> votes) {
 		
-		List<Party> removedParties = new ArrayList<>();
 		Map<Party, Integer> results = new HashMap<>();
-		Map<Vote, Integer> votesMap = new HashMap<>();
 		
 		for (Vote v: votes) {
 			v.setCurrent(0);
@@ -201,5 +409,19 @@ public class VotingSystems {
 		
 		return totalVotes(aux);		
 	}
+	
+	
+    
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

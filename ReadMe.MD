@@ -58,7 +58,7 @@ Cliente de Votacion:
 
 Cliente de Fiscalizacion:
 				
-				./run-fiscalclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Did=​ pollingPlaceNumber -Dparty=​ partyName​ ar.edu.itba.pod.client.FiscalClient
+				./run-fiscalclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Did=​ pollingPlaceNumber -Dparty=​ partyName​
 
 				- xx.xx.xx.xx:yyyy es la dirección IP y el puerto donde está publicado el servicio de fiscalización.
 				- pollingPlaceNumber​ es el número de la mesa de votación a fiscalizar
