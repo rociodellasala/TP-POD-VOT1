@@ -3,7 +3,7 @@ package ar.edu.itba.server;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import ar.edu.itba.Vote;
 import ar.edu.itba.exceptions.InvalidVoteOperationException;
