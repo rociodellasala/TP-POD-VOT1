@@ -8,7 +8,7 @@ Instrucciones
 
 2. Ejecutar ./start.sh
 
-13. Luego ejecutar './CLIENT_SH JVM_ARGUMENTS'
+3. Luego ejecutar './CLIENT_SH JVM_ARGUMENTS'
 
 	Donde CLIENT_SH puede ser alguno de los .sh ya mencionados
 	y JVM_ARGUMENTS son los argumentos correspondientes.
