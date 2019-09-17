@@ -6,9 +6,7 @@
     <groupId>ar.edu.itba.pod</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>ar.edu.itba</groupId>
   <artifactId>podtpe-parent</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>podtpe-parent</name>
   <modules>

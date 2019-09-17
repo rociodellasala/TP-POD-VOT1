@@ -3,13 +3,9 @@ package ar.edu.itba.server.servant;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import ar.edu.itba.exceptions.InvalidQueryMomentException;
 import ar.edu.itba.remoteinterfaces.QueryService;
 import ar.edu.itba.server.ElectionCentral;
-import ar.edu.itba.server.Server;
 import ar.edu.itba.server.VotingSystems;
 import ar.edu.itba.utils.ElectionState;
 import ar.edu.itba.utils.Party;
@@ -17,7 +13,6 @@ import ar.edu.itba.utils.Province;
 
 
 public class QueryServiceImpl implements QueryService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
     private ElectionCentral central;
     private VotingSystems vt;
     private Map<Party, Integer> mapResult;

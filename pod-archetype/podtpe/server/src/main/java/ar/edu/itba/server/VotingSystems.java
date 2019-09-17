@@ -24,8 +24,6 @@ public class VotingSystems {
 	private static Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	
 	public String resultStringSTV(Map<Party, Double> sortedMap) {
-		double total = 0.0;
-		
 		StringBuilder builder = new StringBuilder()
                 .append("Porcentaje;Partido")
                 .append("\r\n");
@@ -148,8 +146,6 @@ public class VotingSystems {
 		
 		List<Vote> firstChoiceVotes;
 		List<Vote> secondChoiceVotes;
-		List<Vote> thirdChoiceVotes;
-		Party party;
 		double percentage;
 		int total;
 		
@@ -157,8 +153,6 @@ public class VotingSystems {
 			super();
 			this.firstChoiceVotes =  new ArrayList<>();
 			this.secondChoiceVotes = new ArrayList<>();
-			this.thirdChoiceVotes = new ArrayList<>();
-			this.party = party;
 			this.total = total;
 		}
 		
@@ -391,7 +385,6 @@ public class VotingSystems {
 		
 		
 		boolean finished = false;
-		int rankingPosition = 1; // empiezo en la 1 pq la 0 ya la tome antes
 		
 		while (finished != true && results.keySet().size() > 1) {
 			Party leastVoted = null;
@@ -399,7 +392,6 @@ public class VotingSystems {
 			for (Party p: results.keySet()) {
 				if ((((double) results.get(p)/ (double) total)*100) >= AV_FLOOR) {
 					LOGGER.info("Encontrado el ganador es " + p.name());
-					double aux = ((results.get(p)/total)*100) ;
 					finished = true;
 				}
 				

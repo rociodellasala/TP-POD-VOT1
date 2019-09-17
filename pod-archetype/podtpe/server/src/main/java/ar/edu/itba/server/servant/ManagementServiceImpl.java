@@ -1,6 +1,6 @@
 package ar.edu.itba.server.servant;
 
-import ar.edu.itba.remoteinterfaces.AdministrationService;
+import ar.edu.itba.remoteinterfaces.ManagementService;
 import ar.edu.itba.server.ElectionCentral;
 import ar.edu.itba.exceptions.InvalidStateException;
 import ar.edu.itba.server.Server;
@@ -9,11 +9,11 @@ import ar.edu.itba.utils.ElectionState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AdministrationServiceImpl implements AdministrationService {
+public class ManagementServiceImpl implements ManagementService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
     private ElectionCentral central;
 
-    public AdministrationServiceImpl(ElectionCentral central) {
+    public ManagementServiceImpl(ElectionCentral central) {
     	this.central = central;
     }
 

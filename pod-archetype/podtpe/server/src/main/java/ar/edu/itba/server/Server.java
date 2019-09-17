@@ -31,7 +31,7 @@ public class Server {
     }
    
     public static void bindAdministrationService(ElectionCentral central) {
-        final AdministrationService adminService = new AdministrationServiceImpl(central);
+        final ManagementService adminService = new ManagementServiceImpl(central);
 
         try {
             final Remote remoteAdmin = UnicastRemoteObject.exportObject(adminService, port);

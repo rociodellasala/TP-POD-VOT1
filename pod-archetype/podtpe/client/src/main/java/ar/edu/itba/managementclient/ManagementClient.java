@@ -1,8 +1,8 @@
-package ar.edu.itba.administrationclient;
+package ar.edu.itba.managementclient;
 
 import ar.edu.itba.Action;
 import ar.edu.itba.exceptions.InvalidStateException;
-import ar.edu.itba.remoteinterfaces.AdministrationService;
+import ar.edu.itba.remoteinterfaces.ManagementService;
 import ar.edu.itba.utils.ElectionState;
 
 import org.slf4j.Logger;
@@ -13,8 +13,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-public class AdministrationClient {
-    private static Logger logger = LoggerFactory.getLogger(AdministrationClient.class);
+public class ManagementClient {
+    private static Logger logger = LoggerFactory.getLogger(ManagementClient.class);
 	private static String serverAddressInput;
 	private static Action actionNameInput;
 	    
@@ -33,7 +33,7 @@ public class AdministrationClient {
     private static void getActionDone() throws InvalidStateException {
     	try {
         	String ip = "//" + serverAddressInput + "/" + "administration-service";
-			final AdministrationService handle = (AdministrationService) 
+			final ManagementService handle = (ManagementService) 
 						Naming.lookup(ip);
 			switch(actionNameInput) {
 				case open:
