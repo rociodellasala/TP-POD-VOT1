@@ -6,32 +6,7 @@ Instrucciones
 
 1. Desde la carpeta principal dirigerse a 'pod-archetype'
 
-2. Ejecutar 'mvn clean install'
-
-3. Dirigirse a 'podtpe/server/target'
-
-4. Extraer 'podtpe-server-1.0-SNAPSHOT-bin.tar.gz'
-
-5. Dirigirse a 'podtpe-server-1.0-SNAPSHOT-bin/podtpe-server-1.0-SNAPSHOT'
-
-6. Ejecutar 'chmod +x run-registry.sh' y 'chmod +x run-server.sh'
-
-7. Luego ejecutar './run-registry.sh'
-
-8. En otra terminal, pero en el mismo directorio ejecutar './run-server.sh'
-
-9. Posicionarse nuevamente en 'podtpe' y dirigirse a 'client/target'
-
-10. Extraer 'podtpe-client-1.0-SNAPSHOT-bin.tar.gz'
-
-11. Dirigirse a 'podtpe-client-1.0-SNAPSHOT-bin/podtpe-client-1.0-SNAPSHOT'
-
-12. Luego ejecutar 'chmod +x CLIENT_SH'
-
-	CLIENT_SH puede ser:  run-managementclient.sh
-						  run-votingclient.sh
-						  run-fiscalclient.sh
-						  run-queryclient.sh
+2. Ejecutar ./start.sh
 
 13. Luego ejecutar './CLIENT_SH JVM_ARGUMENTS'
 

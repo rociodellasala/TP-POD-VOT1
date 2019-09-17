@@ -3,6 +3,7 @@ package ar.edu.itba.server.servant;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class FiscalServiceImpl implements FiscalService, FiscalMonitor {
 
 	public FiscalServiceImpl(ElectionCentral central) {		
 		this.central 		= central;
-		registeredFiscals 	= new HashMap<>();
+		registeredFiscals 	= new ConcurrentHashMap<>();
 		
 		for (Party p: Party.values()) {
 			registeredFiscals.put(p, new HashMap<>());
