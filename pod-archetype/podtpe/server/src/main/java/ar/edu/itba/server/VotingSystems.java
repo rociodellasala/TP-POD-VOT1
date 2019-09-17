@@ -40,9 +40,9 @@ public class VotingSystems {
 			
 			Entry<Party, Double> e = it.next();
 			double percentage = e.getValue();
-            builder.append(e.getKey())
+            builder.append(percentage)
             .append(";")
-            .append(percentage)
+            .append(e.getKey())
             .append("%")
             .append("\r\n");
 		}
@@ -86,9 +86,9 @@ public class VotingSystems {
 			
 			Entry<Party, Integer> e = it.next();
 			double percentage = ((double) e.getValue()/(double) total) *100;
-            builder.append(e.getKey())
+            builder.append(percentage)
             .append(";")
-            .append(percentage)
+            .append(e.getKey())
             .append("%")
             .append("\r\n");
 		}
