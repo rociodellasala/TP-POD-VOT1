@@ -44,7 +44,7 @@ public class QueryClient {
     private static void getSystemProperties() throws InvalidQueryParametersException {
     	serverAddressInput = System.getProperty("serverAddress");
     	optionalIdInput = Optional.ofNullable(System.getProperty("id"));
-    	optionalStateInput = Optional.ofNullable(System.getProperty("state").toUpperCase());
+    	optionalStateInput = Optional.ofNullable(System.getProperty("state"));
     	StringBuilder str = new StringBuilder();
     	str.append(outPathInput);
     	str.append(System.getProperty("outPath"));
@@ -55,7 +55,7 @@ public class QueryClient {
     	} else if (optionalIdInput.isPresent()) {
     		idInput = Integer.valueOf(optionalIdInput.get());
     	} else if (optionalStateInput.isPresent()) {
-    		stateInput = optionalStateInput.get();
+    		stateInput = optionalStateInput.get().toUpperCase();
     	}
     }
     
