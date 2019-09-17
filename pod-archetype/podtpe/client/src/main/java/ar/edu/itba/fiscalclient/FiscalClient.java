@@ -34,7 +34,7 @@ public class FiscalClient {
 	private static void getSystemProperties() {
     	serverAddressInput = System.getProperty("serverAddress");
     	idInput = Integer.valueOf(System.getProperty("id"));
-    	partyInput = System.getProperty("party");
+    	partyInput = System.getProperty("party").toUpperCase();
     }
 	
 	private static void getParty() {

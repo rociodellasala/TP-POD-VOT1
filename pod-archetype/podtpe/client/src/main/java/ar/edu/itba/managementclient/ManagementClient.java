@@ -28,7 +28,7 @@ public class ManagementClient {
     
     private static void getSystemProperties() {
     	serverAddressInput = System.getProperty("serverAddress");
-    	actionNameInput = Action.valueOf(System.getProperty("action"));
+    	actionNameInput = Action.valueOf(System.getProperty("action").toLowerCase());
     }
     
     private static void getActionDone() throws InvalidStateException {

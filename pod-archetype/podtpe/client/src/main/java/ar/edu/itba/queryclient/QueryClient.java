@@ -44,7 +44,7 @@ public class QueryClient {
     private static void getSystemProperties() throws InvalidQueryParametersException {
     	serverAddressInput = System.getProperty("serverAddress");
     	optionalIdInput = Optional.ofNullable(System.getProperty("id"));
-    	optionalStateInput = Optional.ofNullable(System.getProperty("state"));
+    	optionalStateInput = Optional.ofNullable(System.getProperty("state").toUpperCase());
     	StringBuilder str = new StringBuilder();
     	str.append(outPathInput);
     	str.append(System.getProperty("outPath"));
