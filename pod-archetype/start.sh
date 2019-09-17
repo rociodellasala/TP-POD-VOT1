@@ -15,7 +15,7 @@ cd client
 cd target
 tar -xzvf podtpe-client-1.0-SNAPSHOT-bin.tar.gz
 cd podtpe-client-1.0-SNAPSHOT
-chmod +x run-administrationclient.sh
+chmod +x run-managementclient.sh
 chmod +x run-fiscalclient.sh
 chmod +x run-queryclient.sh
 chmod +x run-votingclient.sh
