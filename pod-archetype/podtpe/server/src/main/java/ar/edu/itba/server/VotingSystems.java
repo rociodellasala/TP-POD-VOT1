@@ -87,22 +87,40 @@ public class VotingSystems {
 			Entry<Party, Integer> e = it.next();
 			double percentage = ((double) e.getValue()/(double) total) *100;
             builder.append(percentage)
-            .append(";")
+            .append("%;")
             .append(e.getKey())
-            .append("%")
+            .append("")
             .append("\r\n");
 		}
 		
+    
+		return builder.toString();
+	}
+	
+	public String resultStringAV(Map<Party, Integer> sortedMap, double totalVotes) {
+
 		
-		/*
-		for (Party p: sortedMap.keySet()) {
-    		double percentage = (sortedMap.get(p)/total) * 100;
-            builder.append(p)
-            .append(";")
-            .append(percentage)
-            .append("%")
+		Stream<Map.Entry<Party,Integer>> sorted =
+			    sortedMap.entrySet().stream()
+			       .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
+		
+		Iterator<Entry<Party,Integer>> it = sorted.iterator();
+		
+		StringBuilder builder = new StringBuilder()
+                .append("Porcentaje;Partido")
+                .append("\r\n");
+		
+		while(it.hasNext()) {
+			
+			Entry<Party, Integer> e = it.next();
+			double percentage = ((double) e.getValue()/totalVotes) *100;
+            builder.append(percentage)
+            .append("%;")
+            .append(e.getKey())
+            .append("")
             .append("\r\n");
-		}*/
+		}
+		
     
 		return builder.toString();
 	}

@@ -25,7 +25,7 @@ public class QueryClient {
 	private static String outPathInput = "./";
 	private static Integer idInput;
 	private static String stateInput;
-	 private static String queryResults;
+	private static String queryResults;
     
     public static void main(String[] args) throws RemoteException, 
     NotBoundException, MalformedURLException {
@@ -66,7 +66,6 @@ public class QueryClient {
 						Naming.lookup(ip);
 			if (idInput == null && stateInput == null) {
 				queryResults = handle.percentageAtNationalLevel();	
-				System.out.println(queryResults);
 				System.out.println(queryResults);
 			} else if (stateInput != null) {
 				Province province = Province.valueOf(stateInput);

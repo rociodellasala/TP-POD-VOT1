@@ -29,13 +29,14 @@ public class QueryServiceImpl implements QueryService {
 
 	@Override
 	public String percentageAtNationalLevel() throws RemoteException, InvalidQueryMomentException {
+		double totalVotes = (double) central.getVotes().size();
 		checkIfElectionsAreNotClosed();
 		if (central.getState().equals(ElectionState.OPENED)) {
 			mapResult = vt.FPTP(VotingSystems.totalVotes(central.getVotes()));
 			return vt.resultString(mapResult);
 		} else {
 			mapResult = vt.AV(central.getVotes());
-			return vt.resultString(mapResult);
+			return vt.resultStringAV(mapResult, totalVotes);
 		}
 	}
 
