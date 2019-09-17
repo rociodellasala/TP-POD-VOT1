@@ -20,7 +20,7 @@ import ar.edu.itba.utils.Province;
 
 public class VotingSystems {	
 	public static final double AV_FLOOR = 50.0;
-	public static final double STV_FLOOR = 45.0;
+	//public static final double STV_FLOOR = 45.0;
 	private static Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	
 	public String resultStringSTV(Map<Party, Double> sortedMap) {
@@ -39,9 +39,9 @@ public class VotingSystems {
 			Entry<Party, Double> e = it.next();
 			double percentage = e.getValue();
             builder.append(percentage)
-            .append(";")
+            .append("%;")
             .append(e.getKey())
-            .append("%")
+            .append("")
             .append("\r\n");
 		}
 
@@ -368,6 +368,7 @@ public class VotingSystems {
 	public Map<Party, Integer> AV(List<Vote> votes) {
 		
 		Map<Party, Integer> results = new HashMap<>();
+		List<Party> eliminated = new ArrayList<>();
 		
 		for (Vote v: votes) {
 			v.setCurrent(0);
@@ -412,17 +413,22 @@ public class VotingSystems {
 				// tomo el candidato de menor cantidad de votos
 				//actualizo results
 				for (Vote v: votes) {
-					if(v.getRanking().get(v.getCurrent()).equals(leastVoted) && v.getRanking().size() > (v.getCurrent()+1)) {
-						
-						v.setCurrent(v.getCurrent()+1);
-						Party newParty = v.getRanking().get(v.getCurrent());
-						if(results.containsKey(newParty)) {
-							results.put(newParty, results.get(newParty) + 1);
-						} else {
-							results.put(newParty, 1);
-						}
+						if(v.getRanking().get(v.getCurrent()).equals(leastVoted) && v.getRanking().size() > (v.getCurrent()+1)) {
+							
+							v.setCurrent(v.getCurrent()+1);
+							Party newParty = v.getRanking().get(v.getCurrent());
+							if(results.containsKey(newParty)) {
+								results.put(newParty, results.get(newParty) + 1);
+							} else {
+								if(!eliminated.contains(newParty)) {
+									results.put(newParty, 1);
+								}			
+							}
 					}
+					
+					
 				}
+				eliminated.add(leastVoted);
 				results.remove(leastVoted);
 
 			}
