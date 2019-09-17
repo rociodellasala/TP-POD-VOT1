@@ -375,7 +375,7 @@ public class VotingSystems {
 		boolean finished = false;
 		int rankingPosition = 1; // empiezo en la 1 pq la 0 ya la tome antes
 		
-		while (finished != true /*&& rankingPosition <= 2*/) {
+		while (finished != true && results.keySet().size() > 1) {
 			Party leastVoted = null;
 			
 			for (Party p: results.keySet()) {
@@ -401,7 +401,7 @@ public class VotingSystems {
 				// tomo el candidato de menor cantidad de votos
 				//actualizo results
 				for (Vote v: votes) {
-					if(v.getRanking().get(v.getCurrent()).equals(leastVoted)) {
+					if(v.getRanking().get(v.getCurrent()).equals(leastVoted) && v.getRanking().size() > (v.getCurrent()+1)) {
 						
 						v.setCurrent(v.getCurrent()+1);
 						Party newParty = v.getRanking().get(v.getCurrent());
