@@ -29,7 +29,7 @@ public class QueryClient {
     
     public static void main(String[] args) throws RemoteException, 
     NotBoundException, MalformedURLException {
-    	logger.info("Query client is starting");
+    	logger.info("Query client is connecting");
         try {
 			getSystemProperties();
 			getResults();
@@ -38,6 +38,7 @@ public class QueryClient {
 			System.err.println(e.getMessage());
 			System.exit(-1);
 		}
+        logger.info("Query client has succesfully done his job");
     }
     
     private static void getSystemProperties() throws InvalidQueryParametersException {

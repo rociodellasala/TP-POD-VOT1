@@ -28,10 +28,11 @@ public class VotingClient {
 	private static List<Vote> voteList;
 	    
     public static void main(String[] args) throws NotBoundException, NumberFormatException, IOException {
-        logger.info("Voting client is starting ...");
+        logger.info("Voting client is connecting");
         getSystemProperties();
         int number = readVotes();
         vote(number);
+        logger.info("Voting client has succesfully vote");
     }
     
     private static void getSystemProperties() {

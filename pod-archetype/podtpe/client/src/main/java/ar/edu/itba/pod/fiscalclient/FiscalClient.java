@@ -24,10 +24,11 @@ public class FiscalClient {
 	private static int port = 0;
 	
 	public static void main(String[] args) throws NotBoundException, NumberFormatException, IOException {
-		logger.info("Fiscal client is starting");
+		logger.info("Fiscal client is connecting");
 		getSystemProperties();
 		getParty();
 		registerFiscal();
+		logger.info("Management client has succesfully register");
 	}
 	
 	private static void getSystemProperties() {

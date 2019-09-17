@@ -20,9 +20,10 @@ public class ManagementClient {
 	    
     public static void main(String[] args) throws RemoteException, 
     NotBoundException, MalformedURLException, InvalidStateException {
-    	logger.info("Administration client is starting");
+    	logger.info("Management client is connecting");
         getSystemProperties();
         getActionDone();
+        logger.info("Management client has succesfully done his job");
     }
     
     private static void getSystemProperties() {
