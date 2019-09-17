@@ -298,6 +298,7 @@ public class VotingSystems {
 						winner = p;
 						totalWinners++;	
 						currentlyInRace.remove(p); // lo saco de la carrera, pues ya gano
+						break;
 					}
 					
 					if (leastVoted == null) {
