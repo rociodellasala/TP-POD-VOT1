@@ -50,4 +50,5 @@ public class AdministrationServiceImpl implements AdministrationService {
             	throw new InvalidStateException("Could not close: The elections have finished");
         }
     }
+ 
 }
