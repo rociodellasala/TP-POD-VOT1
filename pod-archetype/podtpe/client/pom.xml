@@ -10,7 +10,7 @@
   <name>podtpe-client</name>
   <dependencies>
     <dependency>
-      <groupId>ar.edu.itba</groupId>
+      <groupId>ar.edu.itba.pod</groupId>
       <artifactId>podtpe-api</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>

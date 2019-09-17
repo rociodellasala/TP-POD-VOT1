@@ -1,6 +1,7 @@
 package ar.edu.itba.server;
 
 import java.rmi.RemoteException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -28,6 +29,10 @@ public class ElectionCentral {
 	
 	public List<Vote> getVotes() {
 		return this.voteList;
+	}
+
+	public List<FiscalMonitor> getMonitors() {
+		return this.monitors;
 	}
 	
 	public void setState(ElectionState newState) {
