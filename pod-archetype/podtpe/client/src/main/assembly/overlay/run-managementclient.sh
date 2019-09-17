@@ -1,4 +1,4 @@
 #!/bin/bash
 
-java -cp 'lib/jars/*' "$@" "ar.edu.itba.administrationclient.AdministrationClient" $*
+java -cp 'lib/jars/*' "$@" "ar.edu.itba.managementclient.ManagementClient" $*
 
