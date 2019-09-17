@@ -24,33 +24,48 @@ public class QueryServiceImpl implements QueryService {
 
 	@Override
 	public String percentageAtNationalLevel() throws RemoteException, InvalidQueryMomentException {
-		double totalVotes = (double) central.getVotes().size();
 		checkIfElectionsAreNotClosed();
-		if (central.getState().equals(ElectionState.OPENED)) {
-			mapResult = vt.FPTP(VotingSystems.totalVotes(central.getVotes()));
-			return vt.resultString(mapResult);
-		} else {
-			mapResult = vt.AV(central.getVotes());
-			return vt.resultStringAV(mapResult, totalVotes);
+		central.getLock().readLock().lock();
+		try {
+			double totalVotes = (double) central.getVotes().size();
+			if (central.getState().equals(ElectionState.OPENED)) {
+				mapResult = vt.FPTP(VotingSystems.totalVotes(central.getVotes()));
+				return vt.resultString(mapResult);
+			} else {
+				mapResult = vt.AV(central.getVotes());
+				return vt.resultStringAV(mapResult, totalVotes);
+			}
+		}finally {
+			central.getLock().readLock().unlock();
 		}
 	}
 
 	@Override
 	public String percentageAtProvincialLevel(Province province) throws RemoteException, InvalidQueryMomentException {
 		checkIfElectionsAreNotClosed();
-		if (central.getState().equals(ElectionState.OPENED)) {
-			mapResult = VotingSystems.provinceVotes(central.getVotes(), province);
-			return vt.resultString(mapResult);
-		} else {
-			Map<Party, Double> provinceMapResult = vt.STV(central.getVotes(), province);
-			return vt.resultStringSTV(provinceMapResult);
+		central.getLock().readLock().lock();
+		try {
+			if (central.getState().equals(ElectionState.OPENED)) {
+				mapResult = VotingSystems.provinceVotes(central.getVotes(), province);
+				return vt.resultString(mapResult);
+			} else {
+				Map<Party, Double> provinceMapResult = vt.STV(central.getVotes(), province);
+				return vt.resultStringSTV(provinceMapResult);
+			}
+		}finally {
+			central.getLock().readLock().unlock();
 		}
 	}
 
 	@Override
 	public String percentageAtTableLevel(Integer id) throws RemoteException, InvalidQueryMomentException {
 		checkIfElectionsAreNotClosed();
-		mapResult = vt.FPTP(VotingSystems.tableVotes(central.getVotes(), id));
+		central.getLock().readLock().lock();
+		try {
+			mapResult = vt.FPTP(VotingSystems.tableVotes(central.getVotes(), id));
+		}finally {
+			central.getLock().readLock().unlock();
+		}
 		return vt.resultString(mapResult);
 }
 	

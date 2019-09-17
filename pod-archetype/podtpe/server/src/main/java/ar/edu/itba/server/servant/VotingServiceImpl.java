@@ -22,7 +22,13 @@ public class VotingServiceImpl implements VotingService {
 
 	@Override
 	public void vote(List<Vote> votes) throws RemoteException, InvalidVoteOperationException {
-		central.addVotes(votes);
+		central.getLock().writeLock().lock();
+		try {
+			central.addVotes(votes);
+		}finally {
+			central.getLock().writeLock().unlock();
+		}
+		
 		LOGGER.info("Votes added");
 	}
 }
