@@ -4,7 +4,11 @@
 
 *.log
 
-
+.metadata
+.settings/
+.loadpath
+.recommenders
+.proyect
 *.jar
 *.war
 *.nar
@@ -13,10 +17,11 @@
 *.tar.gz
 *.rar
 
-
+# Idea
 .idea*
-.iml
-
+*iml
+*ipr
+*iws
 
 pod-archetype/podtpe/client/target/*
 pod-archetype/podtpe/server/target/*
@@ -26,3 +31,4 @@ pod-archetype/podtpe/.metadata
 pod-archetype/podtpe/api/.settings
 pod-archetype/podtpe/server/.settings
 pod-archetype/podtpe/client/.settings
+
