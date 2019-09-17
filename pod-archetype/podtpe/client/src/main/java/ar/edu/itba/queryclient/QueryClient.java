@@ -67,9 +67,11 @@ public class QueryClient {
 			if (idInput == null && stateInput == null) {
 				queryResults = handle.percentageAtNationalLevel();	
 				System.out.println(queryResults);
+				System.out.println(queryResults);
 			} else if (stateInput != null) {
 				Province province = Province.valueOf(stateInput);
 				queryResults =  handle.percentageAtProvincialLevel(province);
+				System.out.println(queryResults);
 			} else {
 				queryResults = handle.percentageAtTableLevel(idInput);
 				System.out.println(queryResults);

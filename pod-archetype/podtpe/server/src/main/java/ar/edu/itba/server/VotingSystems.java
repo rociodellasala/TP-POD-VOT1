@@ -1,12 +1,15 @@
 package ar.edu.itba.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,25 @@ public class VotingSystems {
                 .append("Porcentaje;Partido")
                 .append("\r\n");
 		
+		Stream<Map.Entry<Party,Double>> sorted =
+			    sortedMap.entrySet().stream()
+			       .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
+		
+		Iterator<Entry<Party,Double>> it = sorted.iterator();
+		
+		while(it.hasNext()) {
+			
+			Entry<Party, Double> e = it.next();
+			double percentage = e.getValue();
+            builder.append(e.getKey())
+            .append(";")
+            .append(percentage)
+            .append("%")
+            .append("\r\n");
+		}
+
+		/*
+		
 		for (Party p: sortedMap.keySet()) {
     		double percentage = sortedMap.get(p);
             builder.append(p)
@@ -35,6 +57,7 @@ public class VotingSystems {
             .append("%")
             .append("\r\n");
 		}
+		*/
     
 		return builder.toString();
 	}
@@ -49,10 +72,29 @@ public class VotingSystems {
 			total += sortedMap.get(p);
 		}
 		
+		Stream<Map.Entry<Party,Integer>> sorted =
+			    sortedMap.entrySet().stream()
+			       .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
+		
+		Iterator<Entry<Party,Integer>> it = sorted.iterator();
+		
 		StringBuilder builder = new StringBuilder()
                 .append("Porcentaje;Partido")
                 .append("\r\n");
 		
+		while(it.hasNext()) {
+			
+			Entry<Party, Integer> e = it.next();
+			double percentage = ((double) e.getValue()/(double) total) *100;
+            builder.append(e.getKey())
+            .append(";")
+            .append(percentage)
+            .append("%")
+            .append("\r\n");
+		}
+		
+		
+		/*
 		for (Party p: sortedMap.keySet()) {
     		double percentage = (sortedMap.get(p)/total) * 100;
             builder.append(p)
@@ -60,7 +102,7 @@ public class VotingSystems {
             .append(percentage)
             .append("%")
             .append("\r\n");
-		}
+		}*/
     
 		return builder.toString();
 	}
