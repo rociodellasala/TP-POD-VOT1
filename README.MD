@@ -28,7 +28,7 @@ Instrucciones
 
 12. Luego ejecutar 'chmod +x CLIENT_SH'
 
-	CLIENT_SH puede ser:  run-administrationclient.sh
+	CLIENT_SH puede ser:  run-managementclient.sh
 						  run-votingclient.sh
 						  run-fiscalclient.sh
 						  run-queryclient.sh
@@ -42,7 +42,7 @@ A continuacion se detalla la forma de ejecutar cada uno:
 
 Cliente de Administracion:
 				
-				./run-administrationclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Daction=actionName
+				./run-managementclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Daction=actionName
 
 				- xx.xx.xx.xx:yyyy es la dirección IP y el puerto donde está publicado el servicio de votación.
 				- actionName​ es el nombre de la acción a realizar: open, state o close.
