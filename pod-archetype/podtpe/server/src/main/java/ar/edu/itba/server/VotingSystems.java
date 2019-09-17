@@ -272,7 +272,7 @@ public class VotingSystems {
 		
 		//int votesToWin = (int)  ((STV_FLOOR*((double) total)) / 100.0);
 		
-		while(totalWinners != 5 && results.keySet().size() >= 5) {
+		while(totalWinners != 5 && results.keySet().size() > 5) {
 			
 			boolean winnerFound = false;
 			Party leastVoted = null;
@@ -311,8 +311,10 @@ public class VotingSystems {
 				 */
 				
 				for(Party p: auxiMap.keySet()) {
-					results.put(p, auxiMap.get(p).percentage);
-					LOGGER.info("Porcentaje nuevo para " + p.name() + " es " + auxiMap.get(p).percentage);
+					if(currentlyInRace.contains(p)) {
+						results.put(p, auxiMap.get(p).percentage);
+						LOGGER.info("Porcentaje nuevo para " + p.name() + " es " + auxiMap.get(p).percentage);
+					}				
 				}
 			}
 			
@@ -325,12 +327,14 @@ public class VotingSystems {
 					results.remove(leastVoted);
 					currentlyInRace.remove(leastVoted);
 					for(Party p: auxiMap.keySet()) {
-						results.put(p, auxiMap.get(p).percentage);
+						if(currentlyInRace.contains(p)) {
+							results.put(p, auxiMap.get(p).percentage);
+						}				
 					}
 
 				}
 			}
-			
+			LOGGER.info("Restuls size es " + results.keySet().size());
 		}
 		
 		
