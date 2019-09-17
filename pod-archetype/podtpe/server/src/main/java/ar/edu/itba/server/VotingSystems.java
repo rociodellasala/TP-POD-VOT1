@@ -103,7 +103,7 @@ public class VotingSystems {
 		}
 		
 		public void setPercentage() {
-			this.percentage = (double) firstChoiceVotes.size() / (double) total;
+			this.percentage = ((double) firstChoiceVotes.size() / (double) total)*100;
 		}
 		
 		
@@ -112,17 +112,19 @@ public class VotingSystems {
 	/*
 	 * Si estoy transfiriendo es porque tengo votos de mas. 
 	 */
-	public void transferVotes(Party from, VotingSet vs ,double percentageToTransfer, Map<Party, VotingSet> auxiMap, int total) {
+	public void transferVotes(Party from, VotingSet vs ,double percentageToTransfer, Map<Party, VotingSet> auxiMap, int total, boolean winner) {
 		
 		Map<Party, Integer> countMap = new HashMap<>();
-		vs.percentage = 20.0;
+		if(winner) {
+			vs.percentage = 20.0;
+		}	
 		//int currentFromVotes = vs.firstChoiceVotes.size() + vs.secondChoiceVotes.size() + vs.thirdChoiceVotes.size();
-		
+		int counter = 0;
 		for(Vote v: vs.firstChoiceVotes) {
 			if(v.getRanking().size() > 1) {
 				v.setCurrent(v.getCurrent()+1);
 				Party newParty = v.getRanking().get(v.getCurrent());
-				
+				counter++;
 				if(countMap.containsKey(newParty)) {
 					countMap.put(newParty, countMap.get(newParty) + 1);
 				} else {
@@ -149,13 +151,21 @@ public class VotingSystems {
 				} else {
 					countMap.put(newParty, 1);
 				}
+				counter++;
 				//auxiMap.get(newParty).thirdChoiceVotes.add(v);
 			}
 		}
 		
 		
 		for(Party p: countMap.keySet()) {
-			auxiMap.get(p).percentage += countMap.get(p)/total;
+			LOGGER.info("---------------------------");
+			LOGGER.info("Partido " + p.name());
+			LOGGER.info("Porcentaje previo: " + auxiMap.get(p).percentage);
+			LOGGER.info("esto es " + countMap.get(p));
+			LOGGER.info("2esto es " + countMap.size());
+			LOGGER.info("porc a transferir era  " + percentageToTransfer);
+			auxiMap.get(p).percentage += ((double) countMap.get(p)/(double) counter)*percentageToTransfer;
+			LOGGER.info("Porcentaje nuevo: " + auxiMap.get(p).percentage);
 		}
 		
 		
@@ -227,37 +237,54 @@ public class VotingSystems {
 			Party winner = null;
 			
 			for (Party p: results.keySet()) {
-				if (results.get(p) > STV_FLOOR) {
-					LOGGER.info("Encontrado un ganador es " + p.name());
-					winnerFound = true;
-					winner = p;
-					totalWinners++;
-					results.put(p, 20.0);
-					currentlyInRace.remove(p); // lo saco de la carrera, pues ya gano
-				}
-				
-				if (leastVoted == null) {
-					leastVoted = p;
-				} else {
-					if (results.get(leastVoted) > results.get(p)) {
-						leastVoted = p;
+				if(currentlyInRace.contains(p)) {
+					if (results.get(p) >= STV_FLOOR) {
+						LOGGER.info("Encontrado un ganador es " + p.name());
+						winnerFound = true;
+						winner = p;
+						totalWinners++;	
+						currentlyInRace.remove(p); // lo saco de la carrera, pues ya gano
 					}
-				}
-				
+					
+					if (leastVoted == null) {
+						leastVoted = p;
+					} else {
+						if (results.get(leastVoted) > results.get(p)) {
+							leastVoted = p;
+						}
+					}
+				}	
 			}
 			
 			if(winnerFound) {
 				VotingSet aux= auxiMap.get(winner);
-				transferVotes(winner, aux, aux.percentage - STV_FLOOR, auxiMap, total);
+				//if(aux.percentage - STV_FLOOR > 0.0) {
+					LOGGER.info("Transfiriendo votos...");
+					transferVotes(winner, aux, aux.percentage - STV_FLOOR, auxiMap, total, true);
+					LOGGER.info("Votos transferidos!");
+				//}
+				results.put(winner, 20.0);
+				/*
+				 * Actualizo porcentajes
+				 */
+				
+				for(Party p: auxiMap.keySet()) {
+					results.put(p, auxiMap.get(p).percentage);
+					LOGGER.info("Porcentaje nuevo para " + p.name() + " es " + auxiMap.get(p).percentage);
+				}
 			}
 			
 			else {
 				if(leastVoted != null) {
-					
+					//LOGGER.info("Menos votado fue " + leastVoted.name());
+					LOGGER.info("LEAST VOTED ES " + leastVoted.name());
 					VotingSet aux = auxiMap.get(leastVoted);
-					transferVotes(leastVoted, aux, aux.percentage, auxiMap, total);
+					transferVotes(leastVoted, aux, aux.percentage, auxiMap, total, false);
 					results.remove(leastVoted);
 					currentlyInRace.remove(leastVoted);
+					for(Party p: auxiMap.keySet()) {
+						results.put(p, auxiMap.get(p).percentage);
+					}
 
 				}
 			}

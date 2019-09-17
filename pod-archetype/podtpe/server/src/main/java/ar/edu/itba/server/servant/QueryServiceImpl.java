@@ -42,12 +42,13 @@ public class QueryServiceImpl implements QueryService {
 	@Override
 	public String percentageAtProvincialLevel(Province province) throws RemoteException, InvalidQueryMomentException {
 		checkIfElectionsAreNotClosed();
-		//if (central.getState().equals(ElectionState.OPENED)) {
+		if (central.getState().equals(ElectionState.OPENED)) {
 			mapResult = VotingSystems.provinceVotes(central.getVotes(), province);
 			return vt.resultString(mapResult);
-		//s} //else {
-			//TODO:STV
-			//}
+		} else {
+			Map<Party, Double> provinceMapResult = vt.STV(central.getVotes(), province);
+			return vt.resultStringSTV(provinceMapResult);
+		}
 	}
 
 	@Override
