@@ -22,7 +22,6 @@ import ar.edu.itba.utils.Province;
 public class VotingSystems {	
 	public static final double AV_FLOOR = 50.0;
 	//public static final double STV_FLOOR = 45.0;
-	private static Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	
 	public String resultStringSTV(Map<Party, Double> sortedMap) {
 		
@@ -50,18 +49,6 @@ public class VotingSystems {
             .append("")
             .append("\r\n");
 		}
-
-		/*
-		
-		for (Party p: sortedMap.keySet()) {
-    		double percentage = sortedMap.get(p);
-            builder.append(p)
-            .append(";")
-            .append(percentage)
-            .append("%")
-            .append("\r\n");
-		}
-		*/
     
 		return builder.toString();
 	}
@@ -204,7 +191,6 @@ public class VotingSystems {
 		if(winner) {
 			vs.percentage = 20.0;
 		}	
-		//int currentFromVotes = vs.firstChoiceVotes.size() + vs.secondChoiceVotes.size() + vs.thirdChoiceVotes.size();
 		int counter = 0;
 		for(Vote v: vs.firstChoiceVotes) {
 			if(v.getRanking().size() > 1) {
@@ -244,14 +230,7 @@ public class VotingSystems {
 		
 		
 		for(Party p: countMap.keySet()) {
-//			LOGGER.info("---------------------------");
-//			LOGGER.info("Partido " + p.name());
-//			LOGGER.info("Porcentaje previo: " + auxiMap.get(p).percentage);
-//			LOGGER.info("esto es " + countMap.get(p));
-//			LOGGER.info("2esto es " + countMap.size());
-//			LOGGER.info("porc a transferir era  " + percentageToTransfer);
 			auxiMap.get(p).percentage += ((double) countMap.get(p)/(double) counter)*percentageToTransfer;
-//			LOGGER.info("Porcentaje nuevo: " + auxiMap.get(p).percentage);
 		}
 		
 		
@@ -309,12 +288,8 @@ public class VotingSystems {
 		 * seteo los porcentajes iniciales en cada votingset
 		 */
 		for(Party p: auxiMap.keySet()) {
-			auxiMap.get(p).setPercentage(); // lo llamo ahora pq ya pse todos los votos
+			auxiMap.get(p).setPercentage(); // lo llamo ahora pq ya pase todos los votos
 		}
-		
-	
-		
-		//int votesToWin = (int)  ((STV_FLOOR*((double) total)) / 100.0);
 		
 		while(totalWinners != 5 && results.keySet().size() > 5) {
 			
@@ -325,7 +300,6 @@ public class VotingSystems {
 			for (Party p: results.keySet()) {
 				if(currentlyInRace.contains(p)) {
 					if (results.get(p) >= STV_FLOOR) {
-						//LOGGER.info("Encontrado un ganador es " + p.name());
 						winnerFound = true;
 						winner = p;
 						totalWinners++;	
@@ -345,11 +319,7 @@ public class VotingSystems {
 			
 			if(winnerFound) {
 				VotingSet aux= auxiMap.get(winner);
-				//if(aux.percentage - STV_FLOOR > 0.0) {
-					//LOGGER.info("Transfiriendo votos...");
 					transferVotes(winner, aux, aux.percentage - STV_FLOOR, auxiMap, total, true);
-					//LOGGER.info("Votos transferidos!");
-				//}
 				results.put(winner, 20.0);
 				/*
 				 * Actualizo porcentajes
@@ -358,15 +328,12 @@ public class VotingSystems {
 				for(Party p: auxiMap.keySet()) {
 					if(currentlyInRace.contains(p)) {
 						results.put(p, auxiMap.get(p).percentage);
-						//LOGGER.info("Porcentaje nuevo para " + p.name() + " es " + auxiMap.get(p).percentage);
 					}				
 				}
 			}
 			
 			else {
 				if(leastVoted != null) {
-					//LOGGER.info("Menos votado fue " + leastVoted.name());
-					//LOGGER.info("LEAST VOTED ES " + leastVoted.name());
 					VotingSet aux = auxiMap.get(leastVoted);
 					transferVotes(leastVoted, aux, aux.percentage, auxiMap, total, false);
 					results.remove(leastVoted);
@@ -379,7 +346,6 @@ public class VotingSystems {
 
 				}
 			}
-			//LOGGER.info("Restuls size es " + results.keySet().size());
 		}
 		
 		
@@ -395,7 +361,7 @@ public class VotingSystems {
 	/*
 	 * Aca no uso totalVotes ni nada de eso.
 	 * Llamo directamente  a AV con todo el listado de votos.
-	 * Desps con el mapa q devuelve llamar a resultString
+	 * Despues con el mapa q devuelve llamar a resultString
 	 */
 	public Map<Party, Integer> AV(List<Vote> votes) {
 		
@@ -425,7 +391,6 @@ public class VotingSystems {
 			
 			for (Party p: results.keySet()) {
 				if ((((double) results.get(p)/ (double) total)*100) >= AV_FLOOR) {
-					//LOGGER.info("Encontrado el ganador es " + p.name());
 					finished = true;
 				}
 				
@@ -438,8 +403,6 @@ public class VotingSystems {
 				}
 				
 			}
-			
-			//LOGGER.info("MENOS VOTADO FUE :  " + leastVoted.name());
 
 			if (finished != true) {
 				// tomo el candidato de menor cantidad de votos
