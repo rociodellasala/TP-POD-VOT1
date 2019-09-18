@@ -4,11 +4,17 @@ Della Sala - Giorgi - Rodriguez - Santoflaminio
 
 Instrucciones
 
-1. Desde la carpeta principal dirigerse a 'pod-archetype'
+1. Desde la carpeta principal dirigirse a 'pod-archetype'
 
-2. Ejecutar ./start.sh
+2. Abrir la terminal en dicho directorio 
 
-3. Luego ejecutar './CLIENT_SH JVM_ARGUMENTS'
+3. Ejecutar ./start.sh
+
+4. Ejecutar ./startServer.sh
+
+5. // movernos a la carpeta no falta aca???
+
+6. Por ultimo ejecutar './CLIENT_SH JVM_ARGUMENTS'
 
 	Donde CLIENT_SH puede ser alguno de los .sh ya mencionados
 	y JVM_ARGUMENTS son los argumentos correspondientes.
