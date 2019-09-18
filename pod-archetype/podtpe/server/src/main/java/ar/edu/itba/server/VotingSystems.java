@@ -1,5 +1,6 @@
 package ar.edu.itba.server;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +25,11 @@ public class VotingSystems {
 	private static Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	
 	public String resultStringSTV(Map<Party, Double> sortedMap) {
+		
+		
+		DecimalFormat df = new DecimalFormat("#.##");
+		
+		
 		StringBuilder builder = new StringBuilder()
                 .append("Porcentaje;Partido")
                 .append("\r\n");
@@ -38,7 +44,7 @@ public class VotingSystems {
 			
 			Entry<Party, Double> e = it.next();
 			double percentage = e.getValue();
-            builder.append(percentage)
+            builder.append(Double.parseDouble(df.format(percentage)))
             .append("%;")
             .append(e.getKey())
             .append("")
@@ -64,6 +70,9 @@ public class VotingSystems {
 	 * Llamar esto con lo q devuelve FPTP.
 	 */
 	public String resultString(Map<Party, Integer> sortedMap) {
+		
+		DecimalFormat df = new DecimalFormat("#.##");
+		
 		double total = 0.0;
 		
 		for (Party p: sortedMap.keySet()) {
@@ -84,7 +93,7 @@ public class VotingSystems {
 			
 			Entry<Party, Integer> e = it.next();
 			double percentage = ((double) e.getValue()/(double) total) *100;
-            builder.append(percentage)
+            builder.append(Double.parseDouble(df.format(percentage)))
             .append("%;")
             .append(e.getKey())
             .append("")
@@ -97,6 +106,8 @@ public class VotingSystems {
 	
 	public String resultStringAV(Map<Party, Integer> sortedMap, double totalVotes) {
 
+		
+		DecimalFormat df = new DecimalFormat("#.##");
 		
 		Stream<Map.Entry<Party,Integer>> sorted =
 			    sortedMap.entrySet().stream()
@@ -112,7 +123,7 @@ public class VotingSystems {
 			
 			Entry<Party, Integer> e = it.next();
 			double percentage = ((double) e.getValue()/totalVotes) *100;
-            builder.append(percentage)
+            builder.append(Double.parseDouble(df.format(percentage)))
             .append("%;")
             .append(e.getKey())
             .append("")
@@ -212,14 +223,14 @@ public class VotingSystems {
 		
 		
 		for(Party p: countMap.keySet()) {
-			LOGGER.info("---------------------------");
-			LOGGER.info("Partido " + p.name());
-			LOGGER.info("Porcentaje previo: " + auxiMap.get(p).percentage);
-			LOGGER.info("esto es " + countMap.get(p));
-			LOGGER.info("2esto es " + countMap.size());
-			LOGGER.info("porc a transferir era  " + percentageToTransfer);
+//			LOGGER.info("---------------------------");
+//			LOGGER.info("Partido " + p.name());
+//			LOGGER.info("Porcentaje previo: " + auxiMap.get(p).percentage);
+//			LOGGER.info("esto es " + countMap.get(p));
+//			LOGGER.info("2esto es " + countMap.size());
+//			LOGGER.info("porc a transferir era  " + percentageToTransfer);
 			auxiMap.get(p).percentage += ((double) countMap.get(p)/(double) counter)*percentageToTransfer;
-			LOGGER.info("Porcentaje nuevo: " + auxiMap.get(p).percentage);
+//			LOGGER.info("Porcentaje nuevo: " + auxiMap.get(p).percentage);
 		}
 		
 		
@@ -293,7 +304,7 @@ public class VotingSystems {
 			for (Party p: results.keySet()) {
 				if(currentlyInRace.contains(p)) {
 					if (results.get(p) >= STV_FLOOR) {
-						LOGGER.info("Encontrado un ganador es " + p.name());
+						//LOGGER.info("Encontrado un ganador es " + p.name());
 						winnerFound = true;
 						winner = p;
 						totalWinners++;	
@@ -314,9 +325,9 @@ public class VotingSystems {
 			if(winnerFound) {
 				VotingSet aux= auxiMap.get(winner);
 				//if(aux.percentage - STV_FLOOR > 0.0) {
-					LOGGER.info("Transfiriendo votos...");
+					//LOGGER.info("Transfiriendo votos...");
 					transferVotes(winner, aux, aux.percentage - STV_FLOOR, auxiMap, total, true);
-					LOGGER.info("Votos transferidos!");
+					//LOGGER.info("Votos transferidos!");
 				//}
 				results.put(winner, 20.0);
 				/*
@@ -326,7 +337,7 @@ public class VotingSystems {
 				for(Party p: auxiMap.keySet()) {
 					if(currentlyInRace.contains(p)) {
 						results.put(p, auxiMap.get(p).percentage);
-						LOGGER.info("Porcentaje nuevo para " + p.name() + " es " + auxiMap.get(p).percentage);
+						//LOGGER.info("Porcentaje nuevo para " + p.name() + " es " + auxiMap.get(p).percentage);
 					}				
 				}
 			}
@@ -334,7 +345,7 @@ public class VotingSystems {
 			else {
 				if(leastVoted != null) {
 					//LOGGER.info("Menos votado fue " + leastVoted.name());
-					LOGGER.info("LEAST VOTED ES " + leastVoted.name());
+					//LOGGER.info("LEAST VOTED ES " + leastVoted.name());
 					VotingSet aux = auxiMap.get(leastVoted);
 					transferVotes(leastVoted, aux, aux.percentage, auxiMap, total, false);
 					results.remove(leastVoted);
@@ -347,7 +358,7 @@ public class VotingSystems {
 
 				}
 			}
-			LOGGER.info("Restuls size es " + results.keySet().size());
+			//LOGGER.info("Restuls size es " + results.keySet().size());
 		}
 		
 		
@@ -393,7 +404,7 @@ public class VotingSystems {
 			
 			for (Party p: results.keySet()) {
 				if ((((double) results.get(p)/ (double) total)*100) >= AV_FLOOR) {
-					LOGGER.info("Encontrado el ganador es " + p.name());
+					//LOGGER.info("Encontrado el ganador es " + p.name());
 					finished = true;
 				}
 				
@@ -407,14 +418,13 @@ public class VotingSystems {
 				
 			}
 			
-			LOGGER.info("MENOS VOTADO FUE :  " + leastVoted.name());
+			//LOGGER.info("MENOS VOTADO FUE :  " + leastVoted.name());
 
 			if (finished != true) {
 				// tomo el candidato de menor cantidad de votos
 				//actualizo results
 				for (Vote v: votes) {
-						if(v.getRanking().get(v.getCurrent()).equals(leastVoted) && v.getRanking().size() > (v.getCurrent()+1)) {
-							
+						if(v.getRanking().get(v.getCurrent()).equals(leastVoted) && v.getRanking().size() > (v.getCurrent()+1)) {						
 							v.setCurrent(v.getCurrent()+1);
 							Party newParty = v.getRanking().get(v.getCurrent());
 							if(results.containsKey(newParty)) {
