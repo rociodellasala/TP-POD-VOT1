@@ -49,3 +49,14 @@ Cliente de Consulta:
 				- pollingPlaceNumber ​ es el número de la mesa elegida para resolver la consulta 3
 				- Si se indican ambos ​ -Dstate y ​ -Did la consulta falla
 				- fileName​ es el path del archivo de salida con los resultados de la consulta elegida
+
+
+Tests
+
+Para ejecutar los tests utilizar un entorno de desarrollo como Eclipse.
+
+1. Dirigirse a pod-archetype > podtpe > server > src > main > test > ar > edu > itba > test donde se econtrarán las clases con casos de prueba
+
+2. Agregar al build path la carpeta test mencionada. Para ello, usando Eclipse, ir a Project > Properties. Seleccionar la opción Java Build Path, y luego la pestaña Source. Hacer click en Add Folder... y seleccionar la carpeta test
+
+3. Ejecutar cada clase con JUnit5. Para ello seleccionar en Run > Run Configurations > JUnit, JUnit5 como Test runner
