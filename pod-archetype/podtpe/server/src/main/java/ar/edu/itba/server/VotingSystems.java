@@ -12,9 +12,6 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import ar.edu.itba.Vote;
 import ar.edu.itba.utils.Party;
 import ar.edu.itba.utils.Province;

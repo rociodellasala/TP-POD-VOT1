@@ -32,3 +32,15 @@ pod-archetype/podtpe/api/.settings
 pod-archetype/podtpe/server/.settings
 pod-archetype/podtpe/client/.settings
 
+
+pod-archetype/podtpe/.project
+
+pod-archetype/podtpe/api/.classpath
+
+pod-archetype/podtpe/api/.project
+
+pod-archetype/podtpe/server/.project
+
+pod-archetype/podtpe/server/.classpath
+
+pod-archetype/podtpe/client/.project
