@@ -12,12 +12,12 @@ Instrucciones
 
 4. Ejecutar ./startServer.sh
 
-5. // movernos a la carpeta no falta aca???
+5. Dirigirse a 'client/target/podtpe-client-1.0-SNAPSHOT'
 
 6. Por ultimo ejecutar './CLIENT_SH JVM_ARGUMENTS'
 
-	Donde CLIENT_SH puede ser alguno de los .sh ya mencionados
-	y JVM_ARGUMENTS son los argumentos correspondientes.
+	Donde CLIENT_SH puede ser alguno de los .sh a continuacion: run-managementclient.sh, run-votingclient.sh, run-fiscalclient.sh o run-queryclient.sh
+	JVM_ARGUMENTS son los argumentos correspondientes.
 
 A continuacion se detalla la forma de ejecutar cada uno:
 
@@ -47,7 +47,7 @@ Cliente de Fiscalización:
 
 Cliente de Consulta:
 				
-				./run-queryclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Dstate=​ stateName​ | -Did=​ pollingPlaceNumber​ ] -DoutPath=​ fileName​
+				./run-queryclient.sh -DserverAddress=xx.xx.xx.xx:yyyy [ -Dstate=​ stateName​ | -Did=​ pollingPlaceNumber​ ] -DoutPath=​ fileName​
 
 				- xx.xx.xx.xx:yyyy es la dirección IP y el puerto donde está publicado el servicio de consulta.
 				Si no se indica ​ -Dstate​ ni ​ -Did​ se resuelve la consulta 1
