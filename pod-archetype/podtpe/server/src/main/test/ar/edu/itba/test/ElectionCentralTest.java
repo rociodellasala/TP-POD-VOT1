@@ -19,8 +19,6 @@ import ar.edu.itba.utils.ElectionState;
 import ar.edu.itba.utils.Party;
 import ar.edu.itba.utils.Province;
 
-
-
 public class ElectionCentralTest {
 	
 	private ElectionCentral central;
@@ -38,7 +36,6 @@ public class ElectionCentralTest {
 		votes.add(v1);
 		
 		return votes;
-		
 	} 
 	
 	@Test
