@@ -109,6 +109,27 @@ public class VotingSystems {
 		
 		DecimalFormat df = new DecimalFormat("#.##");
 		
+		/*
+		 * Esto es para imprimir solo el ganador.
+		 * O en caso de empate dejar ambos. 
+		 */
+		if(sortedMap.keySet().size() > 1) {
+			Party winner = null;
+			for(Party p: sortedMap.keySet()) {
+				if(winner == null) {
+					winner = p;
+				}
+				if(sortedMap.get(p) > sortedMap.get(winner)) {
+					//remuevo el ganador anterior
+					sortedMap.remove(winner);
+					winner = p;
+				}
+				else if(sortedMap.get(p) < sortedMap.get(winner)) {
+					sortedMap.remove(p);
+				}
+			}
+		}
+		
 		Stream<Map.Entry<Party,Integer>> sorted =
 			    sortedMap.entrySet().stream()
 			       .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
