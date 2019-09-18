@@ -23,7 +23,7 @@ public class VotingSystemsTest {
 	private VotingSystems vs;
 	
 	@Before
-	public void before() {
+	public void createVotingSystems() {
 		vs = new VotingSystems();
 	}
 	
@@ -248,6 +248,12 @@ public class VotingSystemsTest {
 		assertEquals("16.66",votesMap.get(Party.LYNX).toString().substring(0, 5));
 		assertEquals("8.33",votesMap.get(Party.JACKALOPE).toString().substring(0, 4));
 		assertEquals("20.0",votesMap.get(Party.WHITE_GORILLA).toString().substring(0, 4));
+	
+		Map<Party, Double> votesMap2 = vs.STV(votes, Province.JUNGLE);
+		
+		//Provincia sin votos
+		assertEquals(0, votesMap2.size());
+
 		
 	}
 	
