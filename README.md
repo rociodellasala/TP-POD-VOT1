@@ -1,14 +1,14 @@
-###TPE 1 - Programacion de Objetos Distribuidos 2019
+TPE 1 - Programacion de Objetos Distribuidos 2019
 
 Integrantes: Della Sala - Giorgi - Rodriguez - Santoflaminio
 
-####Instrucciones
+Instrucciones
 
 1. Desde la carpeta principal dirigirse a 'pod-archetype'
 
 2. Abrir la terminal en dicho directorio 
 
-3. Ejecutar __./start.sh
+3. Ejecutar ./start.sh
 
 4. Ejecutar ./startServer.sh
 
@@ -21,7 +21,7 @@ Integrantes: Della Sala - Giorgi - Rodriguez - Santoflaminio
 
 A continuacion se detalla la forma de ejecutar cada uno:
 
-*Cliente de Administración:*
+Cliente de Administración:
 				
 				./run-managementclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Daction=actionName
 
@@ -29,7 +29,7 @@ A continuacion se detalla la forma de ejecutar cada uno:
 				- actionName​ es el nombre de la acción a realizar: open, state o close.
 
 
-*Cliente de Votación:*
+Cliente de Votación:
 				
 				./run-votingclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -DvotesPath=​fileName
 
@@ -37,7 +37,7 @@ A continuacion se detalla la forma de ejecutar cada uno:
 				- fileName​ ​es el path del archivo de entrada con los votos de los ciudadanos
 
 
-*Cliente de Fiscalización:*
+Cliente de Fiscalización:
 				
 				./run-fiscalclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Did=​ pollingPlaceNumber -Dparty=​ partyName​
 
@@ -45,7 +45,7 @@ A continuacion se detalla la forma de ejecutar cada uno:
 				- pollingPlaceNumber​ es el número de la mesa de votación a fiscalizar
 				- partyName​ es el nombre del partido político del fiscal
 
-*Cliente de Consulta:*
+Cliente de Consulta:
 				
 				./run-queryclient.sh -DserverAddress=xx.xx.xx.xx:yyyy -Dstate=​ stateName​ | -Did=​ pollingPlaceNumber​ ] -DoutPath=​ fileName​
 
@@ -57,7 +57,7 @@ A continuacion se detalla la forma de ejecutar cada uno:
 				- fileName​ es el path del archivo de salida con los resultados de la consulta elegida
 
 
-####Tests
+Tests
 
 Para ejecutar los tests utilizar un entorno de desarrollo como Eclipse.
 
